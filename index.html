@@ -1,0 +1,1443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#5A174F">
+  <meta name="description" content="DEEPA GO — the mobile festival companion for Deepavali Fest 2026 at Strand Mall, Kota Damansara.">
+  <meta name="author" content="ASC Agenda Suria Communication Sdn Bhd">
+  <meta property="og:title" content="DEEPA GO — Deepavali Fest 2026">
+  <meta property="og:description" content="Explore the festival map, find booths, create an avatar and keep your visited-booth list.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="DEEPA GO — Deepavali Fest 2026">
+  <meta name="twitter:description" content="Your mobile festival companion for Deepavali Fest 2026.">
+  <title>DEEPA GO 🪔</title>
+  <script id="structured-data-jsonld" type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "DEEPA GO",
+    "description": "Mobile festival companion for Deepavali Fest 2026.",
+    "url": "__SITE_URL__"
+  }
+  </script>
+
+  <style>
+    /* @section: design-tokens */
+    :root {
+      --plum-950: #2B0A2B;
+      --plum-800: #58134F;
+      --plum-700: #741651;
+      --pink: #E63378;
+      --saffron: #FF7333;
+      --gold: #FFC95C;
+      --teal: #16B9B7;
+      --cream: #FFF8EC;
+      --cream-2: #FFF0D6;
+      --ink: #3D1834;
+      --muted: #946F80;
+      --white: #FFFFFF;
+      --line: #EEDBD2;
+      --shadow: 0 12px 28px rgba(72, 18, 61, 0.12);
+      --nav-height: 74px;
+      --header-height: 76px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; }
+    button, input { font: inherit; }
+    button { -webkit-tap-highlight-color: transparent; }
+
+    body {
+      min-height: 100dvh;
+      color: var(--ink);
+      font-family: Nunito, Inter, ui-rounded, "Segoe UI", Arial, sans-serif;
+      background:
+        radial-gradient(circle at 12% 10%, rgba(255, 201, 92, .18), transparent 23%),
+        radial-gradient(circle at 88% 15%, rgba(230, 51, 120, .18), transparent 24%),
+        linear-gradient(145deg, #1A081D, #2B0A2B 55%, #111826);
+      display: flex;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .app-shell {
+      width: 100%;
+      max-width: 390px;
+      height: 100dvh;
+      max-height: 860px;
+      position: relative;
+      overflow: hidden;
+      background: var(--cream);
+      isolation: isolate;
+    }
+
+    .screen {
+      display: none;
+      height: 100%;
+      min-height: 0;
+      flex-direction: column;
+      background:
+        radial-gradient(circle at -20% 26%, rgba(230, 51, 120, .055), transparent 34%),
+        radial-gradient(circle at 115% 70%, rgba(22, 185, 183, .055), transparent 31%),
+        var(--cream);
+      overflow: hidden;
+    }
+    .screen.active { display: flex; }
+
+    .screen-scroll {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      padding: 14px 16px calc(var(--nav-height) + 20px);
+      scrollbar-width: none;
+    }
+    .screen-scroll::-webkit-scrollbar { display: none; }
+
+    .app-header {
+      flex: 0 0 var(--header-height);
+      height: var(--header-height);
+      padding: calc(10px + env(safe-area-inset-top)) 16px 10px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      color: white;
+      background: linear-gradient(125deg, var(--plum-800), #971D61 58%, #E2495D);
+      box-shadow: 0 6px 20px rgba(74, 14, 62, .18);
+      position: relative;
+      z-index: 12;
+    }
+    .app-header::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(circle at 75% 10%, rgba(255, 211, 93, .18), transparent 26%);
+    }
+
+    .brand-button {
+      position: relative;
+      z-index: 2;
+      border: 0;
+      padding: 0;
+      color: white;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-size: 17px;
+      font-weight: 1000;
+      letter-spacing: .035em;
+      cursor: pointer;
+    }
+    .brand-mark {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-size: 18px;
+      background: linear-gradient(145deg, #FFE27D, #FF9A2D);
+      box-shadow: 0 0 22px rgba(255, 199, 79, .55);
+    }
+    .header-label {
+      position: relative;
+      z-index: 2;
+      padding: 7px 11px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.22);
+      background: rgba(255,255,255,.12);
+      color: white;
+      font-size: 11px;
+      font-weight: 900;
+      backdrop-filter: blur(8px);
+    }
+
+    .card {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+    }
+    .section-title {
+      margin: 17px 2px 9px;
+      color: #572143;
+      font-size: 13px;
+      font-weight: 1000;
+    }
+    .small-copy { color: var(--muted); font-size: 10px; line-height: 1.45; }
+
+    .primary-button {
+      width: 100%;
+      border: 0;
+      border-radius: 18px;
+      padding: 14px 18px;
+      color: white;
+      background: linear-gradient(135deg, var(--saffron), var(--pink));
+      box-shadow: 0 12px 24px rgba(226, 51, 120, .26);
+      font-size: 14px;
+      font-weight: 1000;
+      cursor: pointer;
+      transition: transform .18s ease, filter .18s ease;
+    }
+    .primary-button:active { transform: scale(.98); filter: brightness(.96); }
+    .secondary-button {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 9px 12px;
+      color: var(--plum-700);
+      background: white;
+      font-size: 10px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    /* @section: bottom-navigation */
+    .bottom-nav {
+      position: absolute;
+      z-index: 50;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: calc(var(--nav-height) + env(safe-area-inset-bottom));
+      padding: 7px 5px env(safe-area-inset-bottom);
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      background: rgba(255, 255, 255, .97);
+      border-top: 1px solid #F0DDD3;
+      box-shadow: 0 -10px 30px rgba(72, 18, 61, .09);
+      backdrop-filter: blur(14px);
+    }
+    .nav-button {
+      min-width: 0;
+      border: 0;
+      padding: 2px 0;
+      color: #997889;
+      background: transparent;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      cursor: pointer;
+    }
+    .nav-icon {
+      width: 31px;
+      height: 29px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      font-size: 16px;
+    }
+    .nav-label {
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 8px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+    .nav-button.active { color: #C82E6B; }
+    .nav-button.active .nav-icon { background: #FFE1EC; }
+
+    /* @section: welcome-screen */
+    #screen-welcome {
+      background: linear-gradient(165deg, var(--plum-800) 0 37%, var(--cream) 37% 100%);
+    }
+    .welcome-hero {
+      min-height: 296px;
+      padding: calc(30px + env(safe-area-inset-top)) 24px 30px;
+      color: white;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .welcome-hero::before,
+    .welcome-hero::after {
+      content: "";
+      position: absolute;
+      width: 280px;
+      height: 280px;
+      border: 1px solid rgba(255, 210, 91, .12);
+      border-radius: 50%;
+    }
+    .welcome-hero::before { left: -190px; top: 80px; box-shadow: 0 0 0 30px rgba(255,255,255,.02); }
+    .welcome-hero::after { right: -205px; top: -80px; box-shadow: 0 0 0 32px rgba(255,201,92,.025); }
+    .floating-spark { position: absolute; color: var(--gold); animation: twinkle 2.8s ease-in-out infinite; }
+    .spark-a { left: 48px; top: 78px; }
+    .spark-b { right: 50px; top: 112px; animation-delay: .7s; }
+    .spark-c { left: 82px; bottom: 42px; animation-delay: 1.2s; }
+    @keyframes twinkle { 0%,100% { opacity:.45; transform:scale(.8) rotate(0); } 50% { opacity:1; transform:scale(1.15) rotate(15deg); } }
+    .hero-logo {
+      width: 82px;
+      height: 82px;
+      margin: 2px auto 14px;
+      border-radius: 28px;
+      display: grid;
+      place-items: center;
+      font-size: 46px;
+      background: radial-gradient(circle at 45% 38%, #FFE57C, #FF9F31 62%, #DD3B73);
+      box-shadow: 0 0 45px rgba(255, 192, 61, .48);
+    }
+    .app-title { margin: 0; font-size: 34px; line-height: 1; font-weight: 1000; letter-spacing: .045em; }
+    .app-tagline { margin: 7px 0 0; color: #F1D9E7; font-size: 12px; }
+    .welcome-body {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      padding: 0 16px calc(var(--nav-height) + 20px);
+      scrollbar-width: none;
+    }
+    .welcome-body::-webkit-scrollbar { display: none; }
+    .event-summary {
+      margin-top: -8px;
+      padding: 15px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      position: relative;
+      z-index: 3;
+    }
+    .date-tile {
+      flex: 0 0 62px;
+      height: 62px;
+      border-radius: 20px;
+      display: grid;
+      place-items: center;
+      align-content: center;
+      color: #C32E68;
+      background: #FFF0C9;
+      font-weight: 1000;
+      line-height: 1;
+    }
+    .date-tile strong { font-size: 25px; }
+    .date-tile span { margin-top: 5px; font-size: 8px; }
+    .event-summary h2 { margin: 0 0 5px; font-size: 16px; }
+    .event-summary p { margin: 0; color: var(--muted); font-size: 9px; line-height: 1.5; }
+    .festival-pill {
+      width: max-content;
+      max-width: 100%;
+      margin: 12px auto;
+      padding: 8px 12px;
+      border: 1px solid #F4D995;
+      border-radius: 999px;
+      color: #8B3A52;
+      background: #FFF2D5;
+      font-size: 9px;
+      font-weight: 900;
+      text-align: center;
+    }
+    .quick-actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; margin-bottom: 13px; }
+    .quick-action {
+      min-height: 74px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      color: var(--ink);
+      background: white;
+      box-shadow: 0 8px 18px rgba(72, 18, 61, .07);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+    .quick-action span { font-size: 21px; }
+    .quick-action b { font-size: 9px; }
+
+    /* @section: map-screen */
+    .map-toolbar { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:10px; }
+    .instruction-pill { padding:8px 11px; border:1px solid #F2D99C; border-radius:999px; color:#8D3952; background:#FFF2D6; font-size:9px; font-weight:900; white-space:nowrap; }
+    .floor-tabs { padding:3px; display:flex; border-radius:14px; background:#F2E4E0; }
+    .floor-tab { border:0; border-radius:11px; padding:7px 11px; color:#856577; background:transparent; font-size:9px; font-weight:1000; cursor:pointer; }
+    .floor-tab.active { color:#C72F6A; background:white; box-shadow:0 4px 10px rgba(0,0,0,.08); }
+    .map-avatar-bar { min-height:64px; margin-bottom:10px; padding:7px 11px; display:none; align-items:center; gap:9px; }
+    .map-avatar-bar.visible { display:flex; }
+    .mini-avatar { width:46px; height:56px; flex:0 0 auto; position:relative; overflow:hidden; border-radius:15px; background:#FFF0D1; }
+    .mini-avatar img, .marker-avatar img { position:absolute; object-fit:contain; image-rendering:pixelated; pointer-events:none; }
+    .mini-avatar img { width:38px; height:57px; left:4px; top:0; }
+    /* Avatar layers are deliberately body → hair → outfit. */
+    .avatar-base { z-index:1; } .avatar-hair { z-index:2; } .avatar-outfit { z-index:3; }
+    .map-avatar-copy { min-width:0; flex:1; }.map-avatar-copy strong { display:block; font-size:10px; }.map-avatar-copy span { display:block; margin-top:3px; color:var(--muted); font-size:8px; line-height:1.35; }
+    .change-avatar-button { border:0; border-radius:11px; padding:7px 8px; color:#B32965; background:#FFE5EE; font-size:8px; font-weight:1000; cursor:pointer; }
+    #screen-map .screen-scroll { padding-bottom:calc(var(--nav-height) + 120px); }
+    .map-card { padding:10px; position:relative; margin-bottom:12px; }
+    .map-canvas { width:100%; height:455px; position:relative; overflow:hidden; border:1px dashed #DFC6BC; border-radius:18px; background:#FFFCF5; }
+    .map-floor { display:none; position:absolute; inset:0; }.map-floor.active { display:block; }
+    .floor-svg { width:100%; height:100%; display:block; }.map-background { pointer-events:none; }
+    .map-booth { fill:transparent; stroke:transparent; cursor:pointer; pointer-events:all; }.map-booth:focus { outline:none; stroke:#00d5ff; stroke-width:8; fill:rgba(0,213,255,.12); }
+    .map-booth.visited { stroke:#20b98b; stroke-width:7; fill:rgba(32,185,139,.10); }.map-booth.visited + .visited-tick { display:block; }
+    .visited-tick { display:none; pointer-events:none; font-size:30px; fill:#20b98b; font-weight:900; }
+    .route-line { fill:none; stroke:#00d5ff; stroke-width:7; stroke-linecap:round; stroke-linejoin:round; filter:drop-shadow(0 0 7px rgba(0,213,255,.95)); pointer-events:none; }
+    .route-line-under { fill:none; stroke:rgba(255,255,255,.82); stroke-width:13; stroke-linecap:round; stroke-linejoin:round; pointer-events:none; }
+    .map-avatar-marker { width:26px; height:36px; position:absolute; z-index:20; transform:translate(-50%,-50%); pointer-events:none; }
+    /* @section: mini-avatar-marker */
+    /* The avatar assets already have transparent pixels. Keeping this ring transparent prevents a white square/halo from appearing around the small character on the map. */
+    .marker-ring { width:24px; height:24px; position:absolute; left:1px; bottom:1px; border:2px solid #00d5ff; border-radius:50%; background:transparent; box-shadow:0 0 10px rgba(0,213,255,.85); }.marker-pin { position:absolute; inset:0; display:grid; place-items:center; font-size:14px; }
+    .marker-avatar { display:none; position:absolute; left:3px; bottom:1px; width:20px; height:31px; overflow:visible; }.marker-avatar img { width:20px; height:31px; left:0; top:0; }.map-avatar-marker.saved .marker-pin { display:none; }.map-avatar-marker.saved .marker-avatar { display:block; }
+    .map-route-bar { margin-top:9px; min-height:58px; padding:10px; display:flex; align-items:center; gap:9px; border:1px solid rgba(0,213,255,.45); border-radius:15px; color:white; background:linear-gradient(135deg,#071b2a,#102940); box-shadow:0 8px 18px rgba(0,62,88,.22); }
+    .map-route-copy { min-width:0; flex:1; font-size:9px; line-height:1.4; }.map-route-copy strong { display:block; color:#9aeeff; font-size:10px; }
+    .map-route-actions { flex:0 0 auto; display:flex; flex-direction:column; gap:5px; }
+    .map-route-action { border:0; border-radius:12px; padding:8px 9px; color:#012530; background:linear-gradient(135deg,#00d5ff,#00c8b8); font-size:8px; font-weight:1000; cursor:pointer; }
+    .map-route-action.detail { color:#DDFBFF; border:1px solid rgba(0,213,255,.42); background:rgba(255,255,255,.10); }
+    .map-route-action:disabled { opacity:.45; cursor:default; }
+    .map-note { margin:9px 2px 0; color:var(--muted); font-size:8px; line-height:1.45; text-align:center; }
+
+    /* @section: search-screen */
+    .search-box {
+      height: 48px;
+      border: 1px solid var(--line);
+      border-radius: 17px;
+      background: white;
+      box-shadow: 0 9px 22px rgba(72,18,61,.08);
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 0 13px;
+    }
+    .search-box input { width: 100%; min-width: 0; border: 0; outline: 0; color: var(--ink); background: transparent; font-size: 11px; }
+    .search-box input::placeholder { color: #AD8D9A; }
+    .category-row { margin: 11px 0 2px; display: flex; gap: 7px; overflow-x: auto; scrollbar-width: none; }
+    .category-row::-webkit-scrollbar { display: none; }
+    .category-chip {
+      flex: 0 0 auto;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 8px 11px;
+      color: #6B405A;
+      background: white;
+      font-size: 9px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+    .category-chip.active { color: #B82C67; border-color: #F4A8C5; background: #FFE3ED; }
+    .search-category-note { margin: 9px 1px 0; color: #9A7181; font-size: 8px; line-height: 1.45; }
+    .search-result {
+      margin-bottom: 9px;
+      padding: 11px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .result-icon { width: 42px; height: 42px; flex: 0 0 auto; border-radius: 14px; display: grid; place-items: center; background: #FFF0CB; font-size: 20px; }
+    .result-copy { min-width: 0; flex: 1; }
+    .result-copy strong { display: block; overflow: hidden; color: var(--ink); font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }
+    .result-copy span { display: block; margin-top: 4px; color: var(--muted); font-size: 8px; }
+    .result-go { border: 0; border-radius: 11px; padding: 7px 9px; color: white; background: var(--teal); font-size: 8px; font-weight: 1000; cursor: pointer; }
+    .search-message { padding: 22px 16px; text-align: center; background: linear-gradient(135deg, #FFF1D4, #FFE6EF); }
+    .search-message strong { font-size: 12px; }
+    .search-message p { margin: 5px 0 0; color: var(--muted); font-size: 9px; line-height: 1.45; }
+    .result-actions { flex:0 0 auto; display:flex; flex-direction:column; align-items:stretch; gap:5px; }
+    .result-detail { border:1px solid #F1C3D6; border-radius:10px; padding:6px 8px; color:#AF2B65; background:#FFF0F5; font-size:7px; font-weight:1000; cursor:pointer; }
+
+    /* @section: booth-details-screen */
+    .detail-back { border:0; padding:6px 0; color:#6E3E59; background:transparent; font-size:10px; font-weight:1000; cursor:pointer; }
+    .booth-detail-hero { padding:18px; overflow:hidden; position:relative; color:white; border:0; background:linear-gradient(135deg,var(--plum-800),#A41F62 58%,var(--saffron)); }
+    .booth-detail-hero::after { content:""; width:150px; height:150px; position:absolute; right:-70px; top:-70px; border:24px solid rgba(255,211,93,.12); border-radius:50%; }
+    .detail-badges { position:relative; z-index:1; display:flex; flex-wrap:wrap; gap:6px; }
+    .detail-badge { padding:6px 9px; border:1px solid rgba(255,255,255,.2); border-radius:999px; background:rgba(255,255,255,.13); font-size:8px; font-weight:1000; }
+    .detail-badge.sample { color:#623149; border-color:#FFE39B; background:#FFF2C9; }
+    .booth-detail-title { position:relative; z-index:1; margin-top:15px; display:flex; align-items:center; gap:12px; }
+    .detail-icon { width:58px; height:58px; flex:0 0 auto; border-radius:20px; display:grid; place-items:center; background:rgba(255,255,255,.17); box-shadow:inset 0 0 0 1px rgba(255,255,255,.16); font-size:29px; }
+    .booth-detail-title small { display:block; color:#F4DCE8; font-size:8px; font-weight:900; text-transform:uppercase; letter-spacing:.08em; }
+    .booth-detail-title h2 { margin:3px 0 0; font-size:20px; line-height:1.15; }
+    .detail-notice { margin-top:10px; padding:10px 12px; color:#70465C; border:1px solid #F1D596; border-radius:15px; background:#FFF5D9; font-size:8px; line-height:1.45; }
+    .detail-section { margin-top:9px; padding:14px; }
+    .detail-section h3 { margin:0; color:#582143; font-size:11px; }
+    .detail-section p { margin:7px 0 0; color:var(--muted); font-size:9px; line-height:1.55; }
+    .detail-meta-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
+    .detail-meta { padding:12px; }
+    .detail-meta span { display:block; color:#A17D8C; font-size:7px; font-weight:900; text-transform:uppercase; letter-spacing:.06em; }
+    .detail-meta strong { display:block; margin-top:5px; color:#4B173E; font-size:10px; line-height:1.35; }
+    .detail-chip-row { margin-top:9px; display:flex; flex-wrap:wrap; gap:6px; }
+    .detail-chip { padding:7px 9px; border-radius:999px; color:#7A3C56; background:#FFF0D7; font-size:8px; font-weight:900; }
+    .detail-actions { margin-top:12px; display:grid; gap:8px; }
+
+    /* @section: avatar-screen */
+    .avatar-intro { text-align: center; }
+    .avatar-intro h2 { margin: 2px 0 4px; color: #4B173E; font-size: 21px; }
+    .avatar-intro p { margin: 0; color: var(--muted); font-size: 9px; }
+    .gender-toggle { margin: 11px auto 0; display: flex; justify-content: center; gap: 8px; }
+    .gender-button { min-width: 104px; border: 1px solid var(--line); border-radius: 999px; padding: 8px 14px; color: #755064; background: white; font-size: 10px; font-weight: 900; cursor: pointer; }
+    .gender-button.active { color: white; border-color: var(--pink); background: var(--pink); }
+    .avatar-stage {
+      width: 100%;
+      height: 272px;
+      margin: 11px 0 9px;
+      border: 1px solid #F0D8C4;
+      border-radius: 24px;
+      background: radial-gradient(circle at 50% 42%, white, #FFF0D2 76%);
+      box-shadow: var(--shadow);
+      position: relative;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+    }
+    .avatar-stage::after { content: ""; width: 165px; height: 38px; position: absolute; bottom: 23px; border-radius: 50%; background: rgba(81, 29, 69, .10); }
+    .avatar-stack { width: 128px; height: 192px; position: relative; z-index: 2; }
+    .avatar-layer { width: 128px; height: 192px; position: absolute; left: 0; top: 0; object-fit: contain; image-rendering: pixelated; }
+    .avatar-name-input { width: 100%; height: 42px; border: 1px solid var(--line); border-radius: 15px; outline: 0; color: var(--ink); background: white; text-align: center; font-size: 10px; }
+    .selector-row { display: flex; gap: 8px; overflow-x: auto; padding: 1px 1px 4px; scrollbar-width: none; }
+    .selector-row::-webkit-scrollbar { display: none; }
+    .selector-thumb {
+      width: 76px;
+      height: 86px;
+      flex: 0 0 76px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      overflow: hidden;
+    }
+    .selector-thumb.active { border: 2px solid var(--pink); background: #FFF3F7; box-shadow: 0 6px 16px rgba(226,51,120,.14); }
+    .selector-thumb img { width: 54px; height: 58px; object-fit: contain; image-rendering: pixelated; }
+    .selector-thumb span { width: 100%; padding: 0 3px; overflow: hidden; color: #5D354D; font-size: 8px; font-weight: 900; text-align: center; text-overflow: ellipsis; white-space: nowrap; }
+    .avatar-save-row { margin-top: 13px; }
+
+    /* @section: visited-screen */
+    .journey-card { padding: 15px; color: white; background: linear-gradient(135deg, var(--plum-800), #A12163); border: 0; }
+    .journey-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .journey-top strong { display: block; font-size: 14px; }
+    .journey-top span { display: block; margin-top: 4px; color: #EBD7E4; font-size: 8px; }
+    .visit-count { color: var(--gold); font-size: 28px; font-weight: 1000; }
+    .progress-track { height: 7px; margin-top: 11px; overflow: hidden; border-radius: 999px; background: rgba(255,255,255,.2); }
+    .progress-fill { width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--gold), var(--saffron)); transition: width .4s ease; }
+    .visited-row { margin-bottom: 9px; padding: 11px; display: flex; align-items: center; gap: 10px; }
+    .visited-check { width: 37px; height: 37px; flex: 0 0 auto; border-radius: 13px; display: grid; place-items: center; color: white; background: linear-gradient(135deg, var(--teal), #43C992); font-weight: 1000; }
+    .visited-copy { min-width: 0; flex: 1; }
+    .visited-copy strong { display: block; overflow: hidden; font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
+    .visited-copy span { display: block; margin-top: 4px; color: var(--muted); font-size: 8px; }
+    .visited-time { flex: 0 0 auto; color: #A1818E; font-size: 7px; }
+    .empty-visited { padding: 30px 18px; text-align: center; }
+    .empty-visited .empty-icon { font-size: 34px; }
+    .empty-visited strong { display: block; margin-top: 8px; font-size: 13px; }
+    .empty-visited p { margin: 6px auto 13px; max-width: 250px; color: var(--muted); font-size: 9px; line-height: 1.5; }
+    .stamp-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    .stamp { height: 60px; border: 1px dashed #DFC1B8; border-radius: 17px; background: #FFF9ED; display: grid; place-items: center; font-size: 23px; }
+    .stamp.locked { filter: grayscale(1); opacity: .38; }
+    .visited-actions { margin-top: 11px; display: flex; justify-content: flex-end; }
+
+    /* @section: info-screen */
+    .poster-media {
+      height: 215px;
+      border-radius: 24px;
+      overflow: hidden;
+      position: relative;
+      color: white;
+      background: linear-gradient(145deg, #461040, #A11F60 58%, #F06D3F);
+      box-shadow: 0 16px 32px rgba(72,18,61,.18);
+    }
+    .poster-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .poster-fallback { position: absolute; inset: 0; display: none; align-items: center; justify-content: center; flex-direction: column; text-align: center; }
+    .poster-media.missing .poster-fallback { display: flex; }
+    .poster-media.missing img { display: none; }
+    .poster-fallback span { font-size: 44px; }
+    .poster-fallback strong { margin-top: 8px; font-size: 22px; letter-spacing: .03em; }
+    .poster-fallback small { margin-top: 5px; color: #F3D9E7; font-size: 9px; }
+    .info-detail { margin-top: 9px; padding: 11px; display: flex; align-items: center; gap: 11px; }
+    .info-icon { width: 40px; height: 40px; flex: 0 0 auto; border-radius: 14px; display: grid; place-items: center; background: #FFF0CB; font-size: 19px; }
+    .info-detail strong { display: block; font-size: 10px; }
+    .info-detail span { display: block; margin-top: 4px; color: var(--muted); font-size: 8px; line-height: 1.4; }
+    .organiser-card { margin-top: 9px; padding: 14px; text-align: center; background: linear-gradient(135deg, #E9FAF6, white); }
+    .organiser-card strong { display: block; font-size: 10px; }
+    .organiser-card span { display: block; margin-top: 5px; color: var(--muted); font-size: 8px; }
+    .programme-heading { margin:18px 2px 4px; display:flex; align-items:flex-end; justify-content:space-between; gap:10px; }
+    .programme-heading h2 { margin:0; color:#572143; font-size:15px; }
+    .programme-heading span { color:#A07184; font-size:8px; }
+    .programme-notice { margin-top:9px; padding:11px 12px; border:1px solid #F2D18C; border-radius:16px; color:#75475B; background:linear-gradient(135deg,#FFF6D9,#FFF0E8); font-size:8px; line-height:1.5; }
+    .programme-day { margin-top:10px; overflow:hidden; }
+    .programme-day-header { padding:12px 13px; color:white; background:linear-gradient(125deg,var(--plum-800),#9A1F62); display:flex; align-items:center; justify-content:space-between; gap:10px; }
+    .programme-day-header strong { font-size:11px; }
+    .programme-day-header span { color:#F5DDE9; font-size:8px; }
+    .programme-list { padding:4px 12px 9px; }
+    .programme-row { display:grid; grid-template-columns:63px 1fr; gap:10px; padding:10px 0; border-bottom:1px dashed #EAD6CF; }
+    .programme-row:last-child { border-bottom:0; }
+    .programme-time { color:#C02D6A; font-size:8px; font-weight:1000; }
+    .programme-copy strong { display:block; color:#4C193E; font-size:9px; }
+    .programme-copy span { display:block; margin-top:3px; color:var(--muted); font-size:7px; line-height:1.35; }
+
+    /* @section: toast */
+    .toast {
+      position: fixed;
+      z-index: 999;
+      left: 50%;
+      bottom: calc(var(--nav-height) + 18px);
+      width: max-content;
+      max-width: calc(100% - 40px);
+      transform: translateX(-50%) translateY(20px);
+      padding: 11px 16px;
+      border-radius: 999px;
+      color: white;
+      background: rgba(55, 17, 49, .96);
+      box-shadow: 0 12px 25px rgba(0,0,0,.22);
+      font-size: 10px;
+      font-weight: 900;
+      text-align: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .22s ease, transform .22s ease;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    @media (min-width: 600px) {
+      body { padding: 22px; align-items: center; }
+      .app-shell { height: min(844px, calc(100dvh - 44px)); border: 8px solid #2B152E; border-radius: 38px; box-shadow: 0 30px 70px rgba(0,0,0,.42), 0 0 0 2px rgba(255,201,92,.17); }
+    }
+
+    @media (max-height: 720px) {
+      .welcome-hero { min-height: 238px; padding-top: 22px; }
+      .hero-logo { width: 66px; height: 66px; font-size: 38px; }
+      .app-title { font-size: 29px; }
+      .avatar-stage { height: 230px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="app-shell" aria-label="DEEPA GO festival companion">
+
+    <!-- @section: welcome-screen -->
+    <section id="screen-welcome" class="screen active" aria-label="Home">
+      <div class="welcome-hero">
+        <span class="floating-spark spark-a">✦</span>
+        <span class="floating-spark spark-b">✧</span>
+        <span class="floating-spark spark-c">✦</span>
+        <div class="hero-logo" aria-hidden="true">🪔</div>
+        <h1 class="app-title">DEEPA GO</h1>
+        <p class="app-tagline">Your Festival Companion</p>
+      </div>
+      <div class="welcome-body">
+        <article class="card event-summary">
+          <div class="date-tile"><strong>16</strong><span>OCT 2026</span></div>
+          <div>
+            <h2>Deepavali Fest 2026</h2>
+            <p>16–18 October 2026</p>
+            <p>Strand Mall, Kota Damansara</p>
+          </div>
+        </article>
+        <div class="festival-pill">✨ Three days of colour, food and celebration</div>
+        <div class="quick-actions">
+          <button class="quick-action" type="button" onclick="showScreen('screen-map')"><span>🗺️</span><b>Explore Map</b></button>
+          <button class="quick-action" type="button" onclick="showScreen('screen-search')"><span>🔍</span><b>Find Booths</b></button>
+          <button class="quick-action" type="button" onclick="showScreen('screen-avatar')"><span>🎨</span><b>My Avatar</b></button>
+        </div>
+        <button class="primary-button" type="button" onclick="showScreen('screen-map')">Let’s Explore ✦</button>
+      </div>
+      <nav class="bottom-nav" aria-label="Primary navigation"></nav>
+    </section>
+
+    <!-- @section: map-screen -->
+    <section id="screen-map" class="screen" aria-label="Festival map">
+      <header class="app-header">
+        <button class="brand-button" type="button" onclick="showScreen('screen-welcome')"><span class="brand-mark">🪔</span>DEEPA GO</button>
+        <span class="header-label">Festival Map</span>
+      </header>
+      <div class="screen-scroll">
+        <div class="map-toolbar">
+          <span class="instruction-pill">📍 Tap a booth to visit</span>
+          <div class="floor-tabs">
+            <button class="floor-tab active" type="button" data-floor="ground" onclick="switchFloor('ground', this)">G Floor</button>
+            <button class="floor-tab" type="button" data-floor="first" onclick="switchFloor('first', this)">1F</button>
+          </div>
+        </div>
+
+        <div id="map-avatar-bar" class="card map-avatar-bar">
+          <div class="mini-avatar" aria-hidden="true">
+            <img id="map-avatar-hair" class="avatar-hair" alt="">
+            <img id="map-avatar-base" class="avatar-base" alt="">
+            <img id="map-avatar-outfit" class="avatar-outfit" alt="">
+          </div>
+          <div class="map-avatar-copy">
+            <strong><span id="map-avatar-name">Festival Goer</span> is ready</strong>
+            <span id="map-avatar-location">Currently at the entrance</span>
+          </div>
+          <button class="change-avatar-button" type="button" onclick="showScreen('screen-avatar')">Change</button>
+        </div>
+
+        <div class="card map-card">
+          <div class="map-canvas" id="map-canvas">
+            <div id="floor-ground" class="map-floor active" aria-label="Ground floor map">
+              <svg class="floor-svg" viewBox="0 0 864 1228" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ground floor plan"><image class="map-background" href="./images/ground-floor-3d-map.png" x="0" y="0" width="864" height="1228" preserveAspectRatio="xMidYMid meet"/><polyline id="route-under-ground" class="route-line-under" points=""/><polyline id="route-ground" class="route-line" points=""/><rect class="map-booth" id="booth-ground-1" x="636" y="429" width="76" height="61" rx="5" data-booth="1" data-floor="ground" data-x="674" data-y="459.5" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 1" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="697" y="449">✓</text><rect class="map-booth" id="booth-ground-2" x="552" y="429" width="84" height="61" rx="5" data-booth="2" data-floor="ground" data-x="594" data-y="459.5" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 2" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="621" y="449">✓</text><rect class="map-booth" id="booth-ground-3" x="440" y="429" width="80" height="61" rx="5" data-booth="3" data-floor="ground" data-x="480" data-y="459.5" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 3" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="505" y="449">✓</text><rect class="map-booth" id="booth-ground-4" x="348" y="429" width="81" height="61" rx="5" data-booth="4" data-floor="ground" data-x="388.5" data-y="459.5" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 4" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="414" y="449">✓</text><rect class="map-booth" id="booth-ground-5" x="231" y="429" width="62" height="61" rx="5" data-booth="5" data-floor="ground" data-x="262" data-y="459.5" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 5" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="278" y="449">✓</text><rect class="map-booth" id="booth-ground-6" x="158" y="429" width="62" height="61" rx="5" data-booth="6" data-floor="ground" data-x="189" data-y="459.5" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 6" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="205" y="449">✓</text><rect class="map-booth" id="booth-ground-7" x="61" y="492" width="92" height="86" rx="5" data-booth="7" data-floor="ground" data-x="107" data-y="535" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 7" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="138" y="512">✓</text><rect class="map-booth" id="booth-ground-8" x="47" y="558" width="90" height="88" rx="5" data-booth="8" data-floor="ground" data-x="92" data-y="602" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 8" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="122" y="578">✓</text><rect class="map-booth" id="booth-ground-9" x="141" y="665" width="78" height="88" rx="5" data-booth="9" data-floor="ground" data-x="180" data-y="709" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 9" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="204" y="685">✓</text><rect class="map-booth" id="booth-ground-10" x="220" y="700" width="78" height="82" rx="5" data-booth="10" data-floor="ground" data-x="259" data-y="741" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 10" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="283" y="720">✓</text><rect class="map-booth" id="booth-ground-11" x="306" y="724" width="77" height="82" rx="5" data-booth="11" data-floor="ground" data-x="344.5" data-y="765" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 11" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="368" y="744">✓</text><rect class="map-booth" id="booth-ground-12" x="496" y="724" width="77" height="82" rx="5" data-booth="12" data-floor="ground" data-x="534.5" data-y="765" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 12" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="558" y="744">✓</text><rect class="map-booth" id="booth-ground-13" x="570" y="701" width="77" height="82" rx="5" data-booth="13" data-floor="ground" data-x="608.5" data-y="742" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 13" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="632" y="721">✓</text><rect class="map-booth" id="booth-ground-14" x="649" y="665" width="77" height="88" rx="5" data-booth="14" data-floor="ground" data-x="687.5" data-y="709" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 14" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="711" y="685">✓</text><rect class="map-booth" id="booth-ground-15" x="565" y="584" width="61" height="60" rx="5" data-booth="15" data-floor="ground" data-x="595.5" data-y="614" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 15" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="611" y="604">✓</text><rect class="map-booth" id="booth-ground-16" x="503" y="584" width="62" height="60" rx="5" data-booth="16" data-floor="ground" data-x="534" data-y="614" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 16" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="550" y="604">✓</text><rect class="map-booth" id="booth-ground-17" x="565" y="521" width="61" height="62" rx="5" data-booth="17" data-floor="ground" data-x="595.5" data-y="552" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 17" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="611" y="541">✓</text><rect class="map-booth" id="booth-ground-18" x="503" y="521" width="62" height="62" rx="5" data-booth="18" data-floor="ground" data-x="534" data-y="552" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 18" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="550" y="541">✓</text><rect class="map-booth" id="booth-ground-19" x="398" y="521" width="62" height="62" rx="5" data-booth="19" data-floor="ground" data-x="429" data-y="552" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 19" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="445" y="541">✓</text><rect class="map-booth" id="booth-ground-20" x="398" y="584" width="62" height="60" rx="5" data-booth="20" data-floor="ground" data-x="429" data-y="614" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 20" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="445" y="604">✓</text><rect class="map-booth" id="booth-ground-21" x="398" y="645" width="62" height="63" rx="5" data-booth="21" data-floor="ground" data-x="429" data-y="676.5" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 21" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="445" y="665">✓</text><rect class="map-booth" id="booth-ground-22" x="335" y="645" width="62" height="63" rx="5" data-booth="22" data-floor="ground" data-x="366" data-y="676.5" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 22" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="382" y="665">✓</text><rect class="map-booth" id="booth-ground-23" x="335" y="584" width="62" height="60" rx="5" data-booth="23" data-floor="ground" data-x="366" data-y="614" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 23" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="382" y="604">✓</text><rect class="map-booth" id="booth-ground-24" x="335" y="521" width="62" height="62" rx="5" data-booth="24" data-floor="ground" data-x="366" data-y="552" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 24" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="382" y="541">✓</text><rect class="map-booth" id="booth-ground-25" x="232" y="521" width="61" height="62" rx="5" data-booth="25" data-floor="ground" data-x="262.5" data-y="552" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 25" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="278" y="541">✓</text><rect class="map-booth" id="booth-ground-26" x="232" y="584" width="61" height="60" rx="5" data-booth="26" data-floor="ground" data-x="262.5" data-y="614" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 26" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="278" y="604">✓</text><rect class="map-booth" id="booth-ground-27" x="170" y="584" width="61" height="60" rx="5" data-booth="27" data-floor="ground" data-x="200.5" data-y="614" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 27" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="216" y="604">✓</text><rect class="map-booth" id="booth-ground-28" x="170" y="521" width="61" height="62" rx="5" data-booth="28" data-floor="ground" data-x="200.5" data-y="552" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 28" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="216" y="541">✓</text><rect class="map-booth" id="booth-ground-29" x="732" y="118" width="79" height="78" rx="5" data-booth="29" data-floor="ground" data-x="771.5" data-y="157" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 29" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="796" y="138">✓</text><rect class="map-booth" id="booth-ground-30" x="636" y="118" width="79" height="78" rx="5" data-booth="30" data-floor="ground" data-x="675.5" data-y="157" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 30" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="700" y="138">✓</text><rect class="map-booth" id="booth-ground-31" x="540" y="118" width="79" height="78" rx="5" data-booth="31" data-floor="ground" data-x="579.5" data-y="157" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 31" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="604" y="138">✓</text><rect class="map-booth" id="booth-ground-32" x="444" y="118" width="79" height="78" rx="5" data-booth="32" data-floor="ground" data-x="483.5" data-y="157" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 32" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="508" y="138">✓</text><rect class="map-booth" id="booth-ground-33" x="348" y="118" width="81" height="78" rx="5" data-booth="33" data-floor="ground" data-x="388.5" data-y="157" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 33" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="414" y="138">✓</text><rect class="map-booth" id="booth-ground-34" x="253" y="118" width="79" height="78" rx="5" data-booth="34" data-floor="ground" data-x="292.5" data-y="157" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 34" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="317" y="138">✓</text><rect class="map-booth" id="booth-ground-35" x="157" y="118" width="79" height="78" rx="5" data-booth="35" data-floor="ground" data-x="196.5" data-y="157" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 35" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="221" y="138">✓</text><rect class="map-booth" id="booth-ground-36" x="61" y="118" width="79" height="78" rx="5" data-booth="36" data-floor="ground" data-x="100.5" data-y="157" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 36" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="125" y="138">✓</text><rect class="map-booth" id="booth-ground-37" x="61" y="237" width="79" height="78" rx="5" data-booth="37" data-floor="ground" data-x="100.5" data-y="276" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 37" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="125" y="257">✓</text><rect class="map-booth" id="booth-ground-38" x="157" y="237" width="79" height="78" rx="5" data-booth="38" data-floor="ground" data-x="196.5" data-y="276" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 38" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="221" y="257">✓</text><rect class="map-booth" id="booth-ground-39" x="253" y="237" width="79" height="78" rx="5" data-booth="39" data-floor="ground" data-x="292.5" data-y="276" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 39" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="317" y="257">✓</text><rect class="map-booth" id="booth-ground-40" x="348" y="237" width="81" height="78" rx="5" data-booth="40" data-floor="ground" data-x="388.5" data-y="276" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 40" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="414" y="257">✓</text><rect class="map-booth" id="booth-ground-41" x="444" y="237" width="79" height="78" rx="5" data-booth="41" data-floor="ground" data-x="483.5" data-y="276" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 41" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="508" y="257">✓</text><rect class="map-booth" id="booth-ground-42" x="540" y="237" width="79" height="78" rx="5" data-booth="42" data-floor="ground" data-x="579.5" data-y="276" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 42" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="604" y="257">✓</text><rect class="map-booth" id="booth-ground-43" x="636" y="237" width="79" height="78" rx="5" data-booth="43" data-floor="ground" data-x="675.5" data-y="276" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 43" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="700" y="257">✓</text><rect class="map-booth" id="booth-ground-44" x="732" y="237" width="79" height="78" rx="5" data-booth="44" data-floor="ground" data-x="771.5" data-y="276" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 44" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="796" y="257">✓</text><rect class="map-booth" id="booth-ground-45" x="260" y="899" width="64" height="67" rx="5" data-booth="45" data-floor="ground" data-x="292" data-y="932.5" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 45" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="309" y="919">✓</text><rect class="map-booth" id="booth-ground-46" x="171" y="899" width="64" height="67" rx="5" data-booth="46" data-floor="ground" data-x="203" data-y="932.5" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 46" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="220" y="919">✓</text><rect class="map-booth" id="booth-ground-47" x="107" y="995" width="93" height="93" rx="5" data-booth="47" data-floor="ground" data-x="153.5" data-y="1041.5" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 47" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="185" y="1015">✓</text><rect class="map-booth" id="booth-ground-48" x="61" y="1055" width="94" height="98" rx="5" data-booth="48" data-floor="ground" data-x="108" data-y="1104" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 48" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="140" y="1075">✓</text><rect class="map-booth" id="booth-ground-49" x="16" y="1116" width="96" height="98" rx="5" data-booth="49" data-floor="ground" data-x="64" data-y="1165" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 49" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="97" y="1136">✓</text><rect class="map-booth" id="booth-ground-50" x="755" y="1116" width="96" height="98" rx="5" data-booth="50" data-floor="ground" data-x="803" data-y="1165" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 50" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="836" y="1136">✓</text><rect class="map-booth" id="booth-ground-51" x="710" y="1055" width="94" height="98" rx="5" data-booth="51" data-floor="ground" data-x="757" data-y="1104" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 51" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="789" y="1075">✓</text><rect class="map-booth" id="booth-ground-52" x="665" y="995" width="93" height="93" rx="5" data-booth="52" data-floor="ground" data-x="711.5" data-y="1041.5" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 52" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="743" y="1015">✓</text><rect class="map-booth" id="booth-ground-53" x="660" y="899" width="64" height="67" rx="5" data-booth="53" data-floor="ground" data-x="692" data-y="932.5" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 53" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="709" y="919">✓</text><rect class="map-booth" id="booth-ground-54" x="571" y="899" width="64" height="67" rx="5" data-booth="54" data-floor="ground" data-x="603" data-y="932.5" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 54" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="620" y="919">✓</text></svg>
+            </div>
+            <div id="floor-first" class="map-floor" aria-label="First floor map">
+              <svg class="floor-svg" viewBox="0 0 1148 928" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="First floor plan"><image class="map-background" href="./images/first-floor-3d-map.png" x="0" y="0" width="1148" height="928" preserveAspectRatio="xMidYMid meet"/><polyline id="route-under-first" class="route-line-under" points=""/><polyline id="route-first" class="route-line" points=""/><rect class="map-booth" id="booth-first-55" x="1031" y="675" width="65" height="66" rx="5" data-booth="55" data-floor="first" data-x="1063.5" data-y="708" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 55" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="1081" y="695">✓</text><rect class="map-booth" id="booth-first-56" x="1031" y="775" width="65" height="65" rx="5" data-booth="56" data-floor="first" data-x="1063.5" data-y="807.5" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 56" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="1081" y="795">✓</text><rect class="map-booth" id="booth-first-57" x="957" y="675" width="65" height="66" rx="5" data-booth="57" data-floor="first" data-x="989.5" data-y="708" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 57" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="1007" y="695">✓</text><rect class="map-booth" id="booth-first-58" x="957" y="775" width="65" height="65" rx="5" data-booth="58" data-floor="first" data-x="989.5" data-y="807.5" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 58" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="1007" y="795">✓</text><rect class="map-booth" id="booth-first-59" x="883" y="675" width="65" height="66" rx="5" data-booth="59" data-floor="first" data-x="915.5" data-y="708" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 59" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="933" y="695">✓</text><rect class="map-booth" id="booth-first-60" x="883" y="775" width="65" height="65" rx="5" data-booth="60" data-floor="first" data-x="915.5" data-y="807.5" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 60" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="933" y="795">✓</text><rect class="map-booth" id="booth-first-61" x="199" y="775" width="66" height="65" rx="5" data-booth="61" data-floor="first" data-x="232" data-y="807.5" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 61" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="250" y="795">✓</text><rect class="map-booth" id="booth-first-62" x="199" y="675" width="66" height="66" rx="5" data-booth="62" data-floor="first" data-x="232" data-y="708" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 62" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="250" y="695">✓</text><rect class="map-booth" id="booth-first-63" x="124" y="675" width="66" height="66" rx="5" data-booth="63" data-floor="first" data-x="157" data-y="708" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 63" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="175" y="695">✓</text><rect class="map-booth" id="booth-first-64" x="124" y="775" width="66" height="65" rx="5" data-booth="64" data-floor="first" data-x="157" data-y="807.5" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 64" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="175" y="795">✓</text><rect class="map-booth" id="booth-first-65" x="50" y="775" width="65" height="65" rx="5" data-booth="65" data-floor="first" data-x="82.5" data-y="807.5" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 65" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="100" y="795">✓</text><rect class="map-booth" id="booth-first-66" x="50" y="675" width="65" height="66" rx="5" data-booth="66" data-floor="first" data-x="82.5" data-y="708" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 66" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="100" y="695">✓</text><rect class="map-booth" id="booth-first-67" x="956" y="465" width="93" height="94" rx="5" data-booth="67" data-floor="first" data-x="1002.5" data-y="512" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 67" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="1034" y="485">✓</text><rect class="map-booth" id="booth-first-68" x="956" y="361" width="93" height="95" rx="5" data-booth="68" data-floor="first" data-x="1002.5" data-y="408.5" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 68" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="1034" y="381">✓</text><rect class="map-booth" id="booth-first-69" x="956" y="257" width="93" height="96" rx="5" data-booth="69" data-floor="first" data-x="1002.5" data-y="305" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 69" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="1034" y="277">✓</text><rect class="map-booth" id="booth-first-70" x="956" y="154" width="93" height="95" rx="5" data-booth="70" data-floor="first" data-x="1002.5" data-y="201.5" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 70" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="1034" y="174">✓</text><rect class="map-booth" id="booth-first-71" x="754" y="154" width="94" height="95" rx="5" data-booth="71" data-floor="first" data-x="801" data-y="201.5" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 71" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="833" y="174">✓</text><rect class="map-booth" id="booth-first-72" x="754" y="257" width="94" height="96" rx="5" data-booth="72" data-floor="first" data-x="801" data-y="305" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 72" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="833" y="277">✓</text><rect class="map-booth" id="booth-first-73" x="754" y="361" width="94" height="95" rx="5" data-booth="73" data-floor="first" data-x="801" data-y="408.5" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 73" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="833" y="381">✓</text><rect class="map-booth" id="booth-first-74" x="754" y="465" width="94" height="94" rx="5" data-booth="74" data-floor="first" data-x="801" data-y="512" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 74" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="833" y="485">✓</text><rect class="map-booth" id="booth-first-75" x="643" y="465" width="93" height="94" rx="5" data-booth="75" data-floor="first" data-x="689.5" data-y="512" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 75" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="721" y="485">✓</text><rect class="map-booth" id="booth-first-76" x="643" y="361" width="93" height="95" rx="5" data-booth="76" data-floor="first" data-x="689.5" data-y="408.5" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 76" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="721" y="381">✓</text><rect class="map-booth" id="booth-first-77" x="643" y="257" width="93" height="96" rx="5" data-booth="77" data-floor="first" data-x="689.5" data-y="305" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 77" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="721" y="277">✓</text><rect class="map-booth" id="booth-first-78" x="643" y="154" width="93" height="95" rx="5" data-booth="78" data-floor="first" data-x="689.5" data-y="201.5" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 78" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="721" y="174">✓</text><rect class="map-booth" id="booth-first-79" x="403" y="154" width="94" height="95" rx="5" data-booth="79" data-floor="first" data-x="450" data-y="201.5" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 79" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="482" y="174">✓</text><rect class="map-booth" id="booth-first-80" x="403" y="257" width="94" height="96" rx="5" data-booth="80" data-floor="first" data-x="450" data-y="305" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 80" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="482" y="277">✓</text><rect class="map-booth" id="booth-first-81" x="403" y="361" width="94" height="95" rx="5" data-booth="81" data-floor="first" data-x="450" data-y="408.5" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 81" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="482" y="381">✓</text><rect class="map-booth" id="booth-first-82" x="403" y="465" width="94" height="94" rx="5" data-booth="82" data-floor="first" data-x="450" data-y="512" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 82" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="482" y="485">✓</text><rect class="map-booth" id="booth-first-83" x="295" y="465" width="93" height="94" rx="5" data-booth="83" data-floor="first" data-x="341.5" data-y="512" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 83" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="373" y="485">✓</text><rect class="map-booth" id="booth-first-84" x="295" y="361" width="93" height="95" rx="5" data-booth="84" data-floor="first" data-x="341.5" data-y="408.5" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 84" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="373" y="381">✓</text><rect class="map-booth" id="booth-first-85" x="295" y="257" width="93" height="96" rx="5" data-booth="85" data-floor="first" data-x="341.5" data-y="305" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 85" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="373" y="277">✓</text><rect class="map-booth" id="booth-first-86" x="295" y="154" width="93" height="95" rx="5" data-booth="86" data-floor="first" data-x="341.5" data-y="201.5" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 86" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="373" y="174">✓</text><rect class="map-booth" id="booth-first-87" x="295" y="49" width="93" height="99" rx="5" data-booth="87" data-floor="first" data-x="341.5" data-y="98.5" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 87" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="373" y="69">✓</text><rect class="map-booth" id="booth-first-88" x="63" y="49" width="93" height="99" rx="5" data-booth="88" data-floor="first" data-x="109.5" data-y="98.5" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 88" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="141" y="69">✓</text><rect class="map-booth" id="booth-first-89" x="63" y="154" width="93" height="95" rx="5" data-booth="89" data-floor="first" data-x="109.5" data-y="201.5" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 89" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="141" y="174">✓</text><rect class="map-booth" id="booth-first-90" x="63" y="257" width="93" height="96" rx="5" data-booth="90" data-floor="first" data-x="109.5" data-y="305" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 90" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="141" y="277">✓</text><rect class="map-booth" id="booth-first-91" x="63" y="361" width="93" height="95" rx="5" data-booth="91" data-floor="first" data-x="109.5" data-y="408.5" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 91" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="141" y="381">✓</text><rect class="map-booth" id="booth-first-92" x="63" y="465" width="93" height="94" rx="5" data-booth="92" data-floor="first" data-x="109.5" data-y="512" data-name="Vendor to be confirmed" data-category="Other" data-icon="🏪" role="button" tabindex="0" aria-label="Navigate to booth 92" onclick="selectBooth(this)" onkeydown="if(event.key==='Enter'||event.key===' ')selectBooth(this)"></rect><text class="visited-tick" x="141" y="485">✓</text></svg>
+            </div>
+            <div id="map-avatar-marker" class="map-avatar-marker" aria-hidden="true"><div class="marker-ring"></div><div class="marker-pin">📍</div><div class="marker-avatar"><img id="marker-avatar-hair" class="avatar-hair" alt=""><img id="marker-avatar-base" class="avatar-base" alt=""><img id="marker-avatar-outfit" class="avatar-outfit" alt=""></div></div>
+          </div>
+          <div class="map-route-bar" aria-live="polite"><div id="map-status" class="map-route-copy"><strong>Choose a booth</strong>Tap any numbered booth to preview a cyan walking route.</div><div class="map-route-actions"><button id="route-detail-action" class="map-route-action detail" type="button" disabled onclick="openSelectedBoothDetails()">Booth Details</button><button id="route-action" class="map-route-action" type="button" disabled onclick="confirmReachedDestination()">Reached Destination</button></div></div>
+        </div>
+        <p class="map-note">Verified floor plans · tap a booth to preview its route, then confirm when you are ready to move.</p>
+      <nav class="bottom-nav" aria-label="Primary navigation"></nav>
+    </section>
+
+    <!-- @section: search-screen -->
+    <section id="screen-search" class="screen" aria-label="Booth search">
+      <header class="app-header">
+        <button class="brand-button" type="button" onclick="showScreen('screen-welcome')"><span class="brand-mark">🪔</span>DEEPA GO</button>
+        <span class="header-label">Find a Booth</span>
+      </header>
+      <div class="screen-scroll">
+        <label class="search-box">
+          <span aria-hidden="true">🔍</span>
+          <input id="search-input" type="search" placeholder="Search vendor, product or booth number…" autocomplete="off" oninput="runSearch()">
+        </label>
+        <div id="category-row" class="category-row" aria-label="Visitor categories">
+          <button class="category-chip active" type="button" data-category="All" onclick="filterCategory('All', this)">All</button>
+          <button class="category-chip" type="button" data-category="Fashion" onclick="filterCategory('Fashion', this)">Fashion</button>
+          <button class="category-chip" type="button" data-category="Food" onclick="filterCategory('Food', this)">Food</button>
+          <button class="category-chip" type="button" data-category="Beauty" onclick="filterCategory('Beauty', this)">Beauty</button>
+          <button class="category-chip" type="button" data-category="Accessories" onclick="filterCategory('Accessories', this)">Accessories</button>
+        </div>
+        <p id="search-category-note" class="search-category-note">A few clearly labelled sample booths are included for testing. Final vendor names and categories will replace them after booth allocation.</p>
+        <p class="section-title" id="results-title">All booths</p>
+        <div id="search-results"></div>
+      </div>
+      <nav class="bottom-nav" aria-label="Primary navigation"></nav>
+    </section>
+
+    <!-- @section: booth-details-screen -->
+    <section id="screen-booth-detail" class="screen" aria-label="Booth details">
+      <header class="app-header">
+        <button class="brand-button" type="button" onclick="closeBoothDetails()"><span class="brand-mark">←</span>Back</button>
+        <span class="header-label">Booth Details</span>
+      </header>
+      <div class="screen-scroll">
+        <button class="detail-back" type="button" onclick="closeBoothDetails()">← Return to previous page</button>
+        <article class="card booth-detail-hero">
+          <div class="detail-badges"><span id="detail-floor-badge" class="detail-badge">Ground Floor</span><span class="detail-badge sample">Sample information</span></div>
+          <div class="booth-detail-title"><div id="detail-icon" class="detail-icon">🏪</div><div><small id="detail-booth-label">Booth 1</small><h2 id="detail-vendor-name">Vendor to be confirmed</h2></div></div>
+        </article>
+        <div class="detail-notice"><strong>Demo content only.</strong> The vendor allocation, products, promotions and opening details below are temporary examples. Replace them when the organiser confirms the real information.</div>
+        <div class="detail-meta-grid" style="margin-top:9px">
+          <article class="card detail-meta"><span>Category</span><strong id="detail-category">Other</strong></article>
+          <article class="card detail-meta"><span>Availability</span><strong id="detail-opening">During festival hours</strong></article>
+        </div>
+        <article class="card detail-section"><h3>About this booth</h3><p id="detail-description">Temporary booth information will appear here.</p></article>
+        <article class="card detail-section"><h3>Sample highlights</h3><div id="detail-highlights" class="detail-chip-row"></div></article>
+        <article class="card detail-section"><h3>Sample promotion</h3><p id="detail-promotion">Promotion details to be confirmed.</p></article>
+        <div class="detail-actions"><button class="primary-button" type="button" onclick="navigateFromBoothDetails()">Navigate to Booth</button><button class="secondary-button" type="button" onclick="closeBoothDetails()">Back</button></div>
+      </div>
+      <nav class="bottom-nav" aria-label="Primary navigation"></nav>
+    </section>
+
+    <!-- @section: avatar-screen -->
+    <section id="screen-avatar" class="screen" aria-label="Avatar creator">
+      <header class="app-header">
+        <button class="brand-button" type="button" onclick="showScreen('screen-welcome')"><span class="brand-mark">🪔</span>DEEPA GO</button>
+        <span class="header-label">My Avatar</span>
+      </header>
+      <div class="screen-scroll">
+        <div class="avatar-intro">
+          <h2>Dress for the festival ✨</h2>
+          <p>Create the character who will guide you around the map.</p>
+        </div>
+        <div class="gender-toggle">
+          <button id="btn-female" class="gender-button active" type="button" onclick="switchGender('female')">♀ Female</button>
+          <button id="btn-male" class="gender-button" type="button" onclick="switchGender('male')">♂ Male</button>
+        </div>
+        <div class="avatar-stage">
+          <div class="avatar-stack">
+            <img id="avatarHair" class="avatar-layer avatar-hair" alt="Selected hairstyle">
+            <img id="avatarBase" class="avatar-layer avatar-base" alt="Avatar body">
+            <img id="avatarOutfit" class="avatar-layer avatar-outfit" alt="Selected outfit">
+          </div>
+        </div>
+        <input id="avatar-name-input" class="avatar-name-input" type="text" maxlength="20" placeholder="✏️ Enter your name…" oninput="updateAvatarName()">
+        <p class="section-title">Choose hairstyle</p>
+        <div id="hair-selector" class="selector-row"></div>
+        <p class="section-title">Choose outfit</p>
+        <div id="outfit-selector" class="selector-row"></div>
+        <div class="avatar-save-row">
+          <button class="primary-button" type="button" onclick="saveAvatar()">Save Avatar ✓</button>
+        </div>
+      </div>
+      <nav class="bottom-nav" aria-label="Primary navigation"></nav>
+    </section>
+
+    <!-- @section: visited-screen -->
+    <section id="screen-visited" class="screen" aria-label="Visited booths">
+      <header class="app-header">
+        <button class="brand-button" type="button" onclick="showScreen('screen-welcome')"><span class="brand-mark">🪔</span>DEEPA GO</button>
+        <span class="header-label">My Journey</span>
+      </header>
+      <div class="screen-scroll">
+        <article class="card journey-card">
+          <div class="journey-top">
+            <div><strong>Your festival trail</strong><span>Each booth you reach is saved on this device.</span></div>
+            <div id="visit-count" class="visit-count">0</div>
+          </div>
+          <div class="progress-track"><div id="visit-progress" class="progress-fill"></div></div>
+        </article>
+        <p class="section-title">Visited booths</p>
+        <div id="visited-list"></div>
+        <p class="section-title">Festival stamps</p>
+        <div id="stamp-grid" class="stamp-grid"></div>
+        <div class="visited-actions">
+          <button class="secondary-button" type="button" onclick="clearVisitedBooths()">Clear visited list</button>
+        </div>
+      </div>
+      <nav class="bottom-nav" aria-label="Primary navigation"></nav>
+    </section>
+
+    <!-- @section: info-screen -->
+    <section id="screen-info" class="screen" aria-label="Event information">
+      <header class="app-header">
+        <button class="brand-button" type="button" onclick="showScreen('screen-welcome')"><span class="brand-mark">🪔</span>DEEPA GO</button>
+        <span class="header-label">Event Info</span>
+      </header>
+      <div class="screen-scroll">
+        <div class="poster-media">
+          <img src="./images/poster.png" alt="Deepavali Fest 2026 event poster" onerror="this.parentElement.classList.add('missing')">
+          <div class="poster-fallback"><span>🪔</span><strong>DEEPAVALI FEST</strong><small>2026 · Lights, culture and celebration</small></div>
+        </div>
+        <article class="card info-detail"><div class="info-icon">📅</div><div><strong>16–18 October 2026</strong><span>Three festive days</span></div></article>
+        <article class="card info-detail"><div class="info-icon">📍</div><div><strong>Strand Mall</strong><span>Kota Damansara, Selangor</span></div></article>
+        <article class="card info-detail"><div class="info-icon">🕙</div><div><strong>Opening hours</strong><span>To be confirmed by the organiser</span></div></article>
+        <article class="card organiser-card"><strong>Organised by</strong><span>ASC Agenda Suria Communication Sdn Bhd</span></article>
+
+        <!-- @section: sample-stage-programme -->
+        <div class="programme-heading"><h2>Stage Programme</h2><span>3-day sample schedule</span></div>
+        <div class="programme-notice"><strong>Example schedule only.</strong> These programme names and times are temporary planning samples, not the confirmed official event programme. The organiser will update this section when the final schedule is ready.</div>
+
+        <article class="card programme-day">
+          <div class="programme-day-header"><strong>Friday, 16 October 2026</strong><span>Sample · Day 1</span></div>
+          <div class="programme-list">
+            <div class="programme-row"><div class="programme-time">11:00 AM</div><div class="programme-copy"><strong>Festival Welcome & Lamp Lighting</strong><span>Sample opening ceremony segment</span></div></div>
+            <div class="programme-row"><div class="programme-time">2:00 PM</div><div class="programme-copy"><strong>Indian Fashion Showcase</strong><span>Example festive fashion presentation</span></div></div>
+            <div class="programme-row"><div class="programme-time">5:30 PM</div><div class="programme-copy"><strong>Classical & Folk Dance Showcase</strong><span>Sample cultural performance block</span></div></div>
+            <div class="programme-row"><div class="programme-time">8:00 PM</div><div class="programme-copy"><strong>Festival Music Night</strong><span>Example evening entertainment</span></div></div>
+          </div>
+        </article>
+
+        <article class="card programme-day">
+          <div class="programme-day-header"><strong>Saturday, 17 October 2026</strong><span>Sample · Day 2</span></div>
+          <div class="programme-list">
+            <div class="programme-row"><div class="programme-time">11:30 AM</div><div class="programme-copy"><strong>Kids Colouring Activity</strong><span>Example family activity on stage</span></div></div>
+            <div class="programme-row"><div class="programme-time">2:30 PM</div><div class="programme-copy"><strong>Festive Cooking Demonstration</strong><span>Sample food and culture session</span></div></div>
+            <div class="programme-row"><div class="programme-time">5:00 PM</div><div class="programme-copy"><strong>Bollywood Dance Showcase</strong><span>Example dance performance</span></div></div>
+            <div class="programme-row"><div class="programme-time">8:00 PM</div><div class="programme-copy"><strong>Deepavali Celebration Concert</strong><span>Sample headline evening programme</span></div></div>
+          </div>
+        </article>
+
+        <article class="card programme-day">
+          <div class="programme-day-header"><strong>Sunday, 18 October 2026</strong><span>Sample · Day 3</span></div>
+          <div class="programme-list">
+            <div class="programme-row"><div class="programme-time">11:00 AM</div><div class="programme-copy"><strong>Family Games & Quiz</strong><span>Example audience participation activity</span></div></div>
+            <div class="programme-row"><div class="programme-time">2:00 PM</div><div class="programme-copy"><strong>Traditional Attire Parade</strong><span>Sample community showcase</span></div></div>
+            <div class="programme-row"><div class="programme-time">5:30 PM</div><div class="programme-copy"><strong>Cultural Performance Finale</strong><span>Example closing performance block</span></div></div>
+            <div class="programme-row"><div class="programme-time">8:00 PM</div><div class="programme-copy"><strong>Closing Appreciation</strong><span>Sample organiser thank-you and farewell</span></div></div>
+          </div>
+        </article>
+
+        <div style="margin-top:11px"><button class="primary-button" type="button" onclick="showScreen('screen-map')">Open Festival Map</button></div>
+      </div>
+      <nav class="bottom-nav" aria-label="Primary navigation"></nav>
+    </section>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  </main>
+
+  <script>
+    "use strict";
+
+    /* @section: avatar-data */
+    const hairData = {
+      female: [
+        { file: "hair-f-1.png", name: "Long Straight" },
+        { file: "hair-f-2.png", name: "Ponytail" },
+        { file: "hair-f-3.png", name: "Braid" },
+        { file: "hair-f-4.png", name: "Bun" }
+      ],
+      male: [
+        { file: "hair-m-1.png", name: "Short Fade" },
+        { file: "hair-m-2.png", name: "Man Bun" },
+        { file: "hair-m-3.png", name: "Curly" },
+        { file: "hair-m-4.png", name: "Side Part" }
+      ]
+    };
+
+    const outfitData = {
+      female: [
+        { file: "outfit-f-1.png", name: "Saree" },
+        { file: "outfit-f-2.png", name: "Anarkali" },
+        { file: "outfit-f-3.png", name: "Tops" },
+        { file: "outfit-f-4.png", name: "Lehenga" }
+      ],
+      male: [
+        { file: "outfit-m-1.png", name: "Veshti" },
+        { file: "outfit-m-2.png", name: "Kurta" },
+        { file: "outfit-m-3.png", name: "Sherwani" },
+        { file: "outfit-m-4.png", name: "Veshti Pant" }
+      ]
+    };
+
+    const hairOffsets = {
+      female: [
+        { top: 8, left: 0 },
+        { top: 0, left: 6 },
+        { top: 9, left: 4 },
+        { top: -3, left: 0 }
+      ],
+      male: [
+        { top: 0, left: 0 },
+        { top: 0, left: 0 },
+        { top: 0, left: 0 },
+        { top: -10, left: 0 }
+      ]
+    };
+
+    const outfitOffsets = {
+      female: [
+        { top: 0, left: 0 },
+        { top: -1, left: 0 },
+        { top: 0, left: 0 },
+        { top: 5, left: 0 }
+      ],
+      male: [
+        { top: 0, left: 0 },
+        { top: 0, left: 0 },
+        { top: 0, left: 0 },
+        { top: 0, left: 6 }
+      ]
+    };
+
+    /* @section: application-state */
+    const SAVE_KEY = "gidfGoProgress";
+    const VALID_SCREENS = ["screen-welcome", "screen-map", "screen-search", "screen-booth-detail", "screen-avatar", "screen-visited", "screen-info"];
+
+    /* @section: sample-booth-profiles — temporary demo content only */
+    const sampleBoothProfiles = {
+      "8": { vendor: "Rangoli Threads (Sample)", category: "Fashion", icon: "👗", description: "A temporary example fashion booth featuring colourful festive clothing and coordinated family looks.", highlights: ["Festive sarees", "Kurta sets", "Family styles"], promotion: "Sample offer: selected festive pieces from RM49. Final promotion to be confirmed.", opening: "Sample: 10:00 AM–10:00 PM" },
+      "20": { vendor: "Spice Lane Kitchen (Sample)", category: "Food", icon: "🍛", description: "A temporary example food booth serving familiar Indian comfort dishes, snacks and festival treats.", highlights: ["Mini thali", "Masala tea", "Sweet treats"], promotion: "Sample offer: festival tasting set at a promotional price. Final menu and price to be confirmed.", opening: "Sample: 11:00 AM–10:00 PM" },
+      "34": { vendor: "Glow & Grace (Sample)", category: "Beauty", icon: "✨", description: "A temporary example beauty booth presenting festive makeup ideas, skincare samples and quick styling consultations.", highlights: ["Makeup demo", "Skincare samples", "Festive styling"], promotion: "Sample offer: complimentary mini consultation with selected purchases. Final terms to be confirmed.", opening: "Sample: 10:00 AM–9:30 PM" },
+      "57": { vendor: "Jewel Box Studio (Sample)", category: "Accessories", icon: "💎", description: "A temporary example accessories booth with statement jewellery, bangles and colourful festive add-ons.", highlights: ["Bangles", "Earrings", "Gift sets"], promotion: "Sample offer: bundle savings on selected accessory sets. Final promotion to be confirmed.", opening: "Sample: 10:00 AM–10:00 PM" },
+      "79": { vendor: "Heritage Hands (Sample)", category: "Cultural Crafts", icon: "🎨", description: "A temporary example craft booth showcasing decorative pieces inspired by traditional patterns and handmade techniques.", highlights: ["Handmade décor", "Gift items", "Craft demo"], promotion: "Sample offer: small keepsake with qualifying purchases, while sample stocks last. Final details to be confirmed.", opening: "Sample: 10:30 AM–9:30 PM" }
+    };
+
+    let currentGender = "female";
+    let selectedHair = 0;
+    let selectedOutfit = 0;
+    let avatarName = "Festival Goer";
+    let avatarSaved = false;
+    let currentFloor = "ground";
+    let currentScreen = "screen-welcome";
+    let mapPosition = { floor: "ground", x: 432, y: 815, booth: null, name: "Entrance Arch", routeNode: "g_start", egress: [] };
+    let visitedBooths = [];
+    let activeCategory = "All";
+    let selectedDetailBooth = null;
+    let boothDetailReturnScreen = "screen-search";
+    let mapSelectedBoothCode = null;
+    let appReady = false;
+
+    const navigationItems = [
+      { screen: "screen-welcome", icon: "🏠", label: "Home" },
+      { screen: "screen-map", icon: "🗺️", label: "Map" },
+      { screen: "screen-search", icon: "🔍", label: "Search" },
+      { screen: "screen-avatar", icon: "🧑", label: "Avatar" },
+      { screen: "screen-visited", icon: "✓", label: "Visited" },
+      { screen: "screen-info", icon: "ⓘ", label: "Info" }
+    ];
+
+    /* @section: navigation-logic */
+    function buildNavigation() {
+      document.querySelectorAll(".bottom-nav").forEach(nav => {
+        nav.innerHTML = navigationItems.map(item => `
+          <button class="nav-button" type="button" data-target="${item.screen}" onclick="showScreen('${item.screen}')">
+            <span class="nav-icon">${item.icon}</span>
+            <span class="nav-label">${item.label}</span>
+          </button>
+        `).join("");
+      });
+    }
+
+    function showScreen(id, shouldSave = true, preserveMapRoute = false) {
+      if (!VALID_SCREENS.includes(id)) id = "screen-welcome";
+      document.querySelectorAll(".screen").forEach(screen => screen.classList.remove("active"));
+      const nextScreen = document.getElementById(id);
+      if (!nextScreen) return;
+      nextScreen.classList.add("active");
+      currentScreen = id;
+      const activeNavScreen = id === "screen-booth-detail" ? boothDetailReturnScreen : id;
+      document.querySelectorAll(".nav-button").forEach(button => {
+        button.classList.toggle("active", button.dataset.target === activeNavScreen);
+      });
+      const scroller = nextScreen.querySelector(".screen-scroll, .welcome-body");
+      if (scroller) scroller.scrollTop = 0;
+      if (id === "screen-map" && !preserveMapRoute) resetMapToFloorStart(currentFloor, false);
+      if (id === "screen-search") runSearch();
+      if (id === "screen-visited") renderVisitedBooths();
+      if (id === "screen-booth-detail" && selectedDetailBooth) renderBoothDetails();
+      if (shouldSave && appReady) saveProgress();
+    }
+
+    /* @section: map-logic — native-coordinate walkway-only navigation */
+    let selectedRoute = null;
+    let routeAnimation = null;
+    const floorStarts = {"ground":{"x":432,"y":815,"name":"Entrance Arch","routeNode":"g_start","booth":null,"egress":[]},"first":{"x":574,"y":850,"name":"Escalator Area","routeNode":"f_start","booth":null,"egress":[]}};
+    const mapDimensions = {"ground":{"w":864,"h":1228},"first":{"w":1148,"h":928}};
+    const navigationGraphs = {"ground":{"nodes":{"g_start":{"x":432,"y":815},"g_ring_bottom":{"x":432,"y":715},"g_left_gap_bottom":{"x":302,"y":715},"g_left_gap_top":{"x":302,"y":650},"g_ring_left_low":{"x":159,"y":650},"g_ring_left_mid":{"x":159,"y":620},"g_right_outer_bottom":{"x":730,"y":815},"g_right_outer_top":{"x":730,"y":650},"g_ring_right_low":{"x":700,"y":650},"g_ring_right_mid":{"x":700,"y":620},"g_ring_top_center":{"x":435,"y":505},"g_ring_top_right":{"x":700,"y":505},"g_aisle_left_top":{"x":318,"y":505},"g_aisle_left_mid":{"x":318,"y":614},"g_aisle_left_bottom":{"x":318,"y":720},"g_aisle_right_top":{"x":480,"y":505},"g_aisle_right_mid":{"x":480,"y":614},"g_aisle_right_bottom":{"x":480,"y":720},"g_top_connector_low":{"x":435,"y":400},"g_top_connector_high":{"x":435,"y":330},"g_upper_lane":{"x":435,"y":216},"g_out_left_gate":{"x":330,"y":815},"g_out_left_top":{"x":330,"y":880},"g_out_left_turn":{"x":245,"y":880},"g_out_left_side":{"x":245,"y":980},"g_out_left_low":{"x":245,"y":1180},"g_out_right_gate":{"x":535,"y":815},"g_out_right_top":{"x":535,"y":880},"g_out_right_turn":{"x":645,"y":880},"g_out_right_side":{"x":645,"y":980},"g_out_right_low":{"x":645,"y":1180}},"edges":[["g_start","g_ring_bottom"],["g_ring_bottom","g_left_gap_bottom"],["g_left_gap_bottom","g_left_gap_top"],["g_left_gap_top","g_ring_left_low"],["g_ring_left_low","g_ring_left_mid"],["g_start","g_right_outer_bottom"],["g_right_outer_bottom","g_right_outer_top"],["g_right_outer_top","g_ring_right_low"],["g_ring_right_low","g_ring_right_mid"],["g_ring_top_center","g_ring_top_right"],["g_ring_top_right","g_ring_right_mid"],["g_aisle_left_top","g_aisle_left_mid"],["g_aisle_left_mid","g_aisle_left_bottom"],["g_aisle_left_bottom","g_ring_bottom"],["g_ring_top_center","g_aisle_right_top"],["g_aisle_right_top","g_aisle_right_mid"],["g_aisle_right_mid","g_aisle_right_bottom"],["g_aisle_right_bottom","g_ring_bottom"],["g_ring_top_center","g_top_connector_low"],["g_top_connector_low","g_top_connector_high"],["g_top_connector_high","g_upper_lane"],["g_start","g_out_left_gate"],["g_out_left_gate","g_out_left_top"],["g_out_left_top","g_out_left_turn"],["g_out_left_turn","g_out_left_side"],["g_out_left_side","g_out_left_low"],["g_start","g_out_right_gate"],["g_out_right_gate","g_out_right_top"],["g_out_right_top","g_out_right_turn"],["g_out_right_turn","g_out_right_side"],["g_out_right_side","g_out_right_low"]]},"first":{"nodes":{"f_start":{"x":574,"y":850},"f_start_drop":{"x":574,"y":900},"f_left_bottom":{"x":340,"y":900},"f_left_main":{"x":340,"y":580},"f_right_bottom":{"x":820,"y":900},"f_right_main":{"x":820,"y":580},"f_left_lane_bottom":{"x":225,"y":580},"f_left_lane_mid":{"x":225,"y":350},"f_left_lane_top":{"x":225,"y":100},"f_mid_lane_bottom":{"x":572,"y":580},"f_mid_lane_mid":{"x":572,"y":350},"f_mid_lane_top":{"x":572,"y":150},"f_right_lane_bottom":{"x":901,"y":580},"f_right_lane_mid":{"x":901,"y":350},"f_right_lane_top":{"x":901,"y":150},"f_green_left_entry":{"x":340,"y":758},"f_green_left_lane":{"x":280,"y":758},"f_green_right_entry":{"x":820,"y":758},"f_green_right_lane":{"x":868,"y":758}},"edges":[["f_start","f_start_drop"],["f_start_drop","f_left_bottom"],["f_start_drop","f_right_bottom"],["f_left_bottom","f_left_main"],["f_right_bottom","f_right_main"],["f_left_main","f_left_lane_bottom"],["f_left_lane_bottom","f_left_lane_mid"],["f_left_lane_mid","f_left_lane_top"],["f_left_main","f_mid_lane_bottom"],["f_right_main","f_mid_lane_bottom"],["f_mid_lane_bottom","f_mid_lane_mid"],["f_mid_lane_mid","f_mid_lane_top"],["f_right_main","f_right_lane_bottom"],["f_right_lane_bottom","f_right_lane_mid"],["f_right_lane_mid","f_right_lane_top"],["f_left_bottom","f_green_left_entry"],["f_green_left_entry","f_green_left_lane"],["f_right_bottom","f_green_right_entry"],["f_green_right_entry","f_green_right_lane"]]}};
+    const boothApproaches = {"ground":{"36":{"node":"g_upper_lane","path":[{"x":100.5,"y":216},{"x":100.5,"y":202}]},"35":{"node":"g_upper_lane","path":[{"x":196.5,"y":216},{"x":196.5,"y":202}]},"34":{"node":"g_upper_lane","path":[{"x":292.5,"y":216},{"x":292.5,"y":202}]},"33":{"node":"g_upper_lane","path":[{"x":388.5,"y":216},{"x":388.5,"y":202}]},"32":{"node":"g_upper_lane","path":[{"x":483.5,"y":216},{"x":483.5,"y":202}]},"31":{"node":"g_upper_lane","path":[{"x":579.5,"y":216},{"x":579.5,"y":202}]},"30":{"node":"g_upper_lane","path":[{"x":675.5,"y":216},{"x":675.5,"y":202}]},"29":{"node":"g_upper_lane","path":[{"x":771.5,"y":216},{"x":771.5,"y":202}]},"37":{"node":"g_upper_lane","path":[{"x":100.5,"y":216},{"x":100.5,"y":231}]},"38":{"node":"g_upper_lane","path":[{"x":196.5,"y":216},{"x":196.5,"y":231}]},"39":{"node":"g_upper_lane","path":[{"x":292.5,"y":216},{"x":292.5,"y":231}]},"40":{"node":"g_upper_lane","path":[{"x":388.5,"y":216},{"x":388.5,"y":231}]},"41":{"node":"g_upper_lane","path":[{"x":483.5,"y":216},{"x":483.5,"y":231}]},"42":{"node":"g_upper_lane","path":[{"x":579.5,"y":216},{"x":579.5,"y":231}]},"43":{"node":"g_upper_lane","path":[{"x":675.5,"y":216},{"x":675.5,"y":231}]},"44":{"node":"g_upper_lane","path":[{"x":771.5,"y":216},{"x":771.5,"y":231}]},"1":{"node":"g_ring_top_center","path":[{"x":674.0,"y":505},{"x":674.0,"y":496}]},"2":{"node":"g_ring_top_center","path":[{"x":594.0,"y":505},{"x":594.0,"y":496}]},"3":{"node":"g_ring_top_center","path":[{"x":480.0,"y":505},{"x":480.0,"y":496}]},"4":{"node":"g_ring_top_center","path":[{"x":388.5,"y":505},{"x":388.5,"y":496}]},"5":{"node":"g_ring_top_center","path":[{"x":262.0,"y":505},{"x":262.0,"y":496}]},"6":{"node":"g_ring_top_center","path":[{"x":189.0,"y":505},{"x":189.0,"y":496}]},"7":{"node":"g_ring_left_mid","path":[{"x":159,"y":535.0},{"x":159,"y":535.0}]},"8":{"node":"g_ring_left_low","path":[{"x":159,"y":602.0},{"x":143,"y":602.0}]},"28":{"node":"g_aisle_left_top","path":[{"x":200.5,"y":505},{"x":200.5,"y":515}]},"25":{"node":"g_aisle_left_top","path":[{"x":262.5,"y":505},{"x":262.5,"y":515}]},"27":{"node":"g_left_gap_top","path":[{"x":302,"y":650},{"x":200.5,"y":650}]},"26":{"node":"g_left_gap_top","path":[{"x":302,"y":650},{"x":262.5,"y":650}]},"24":{"node":"g_ring_top_center","path":[{"x":366.0,"y":505},{"x":366.0,"y":515}]},"19":{"node":"g_ring_top_center","path":[{"x":429.0,"y":505},{"x":429.0,"y":515}]},"23":{"node":"g_aisle_left_mid","path":[{"x":318,"y":614.0},{"x":329,"y":614.0}]},"20":{"node":"g_aisle_right_mid","path":[{"x":480,"y":614.0},{"x":466,"y":614.0}]},"22":{"node":"g_ring_bottom","path":[{"x":366.0,"y":715},{"x":366.0,"y":714}]},"21":{"node":"g_ring_bottom","path":[{"x":429.0,"y":715},{"x":429.0,"y":714}]},"18":{"node":"g_ring_top_center","path":[{"x":534.0,"y":505},{"x":534.0,"y":515}]},"17":{"node":"g_ring_top_center","path":[{"x":595.5,"y":505},{"x":595.5,"y":515}]},"16":{"node":"g_ring_right_low","path":[{"x":700,"y":650},{"x":534.0,"y":650}]},"15":{"node":"g_ring_right_low","path":[{"x":700,"y":650},{"x":595.5,"y":650}]},"9":{"node":"g_ring_left_low","path":[{"x":180.0,"y":650},{"x":180.0,"y":659}]},"10":{"node":"g_left_gap_bottom","path":[{"x":302,"y":788},{"x":259.0,"y":788}]},"11":{"node":"g_ring_bottom","path":[{"x":432,"y":812},{"x":344.5,"y":812}]},"12":{"node":"g_ring_bottom","path":[{"x":432,"y":812},{"x":534.5,"y":812}]},"13":{"node":"g_right_outer_bottom","path":[{"x":730,"y":789},{"x":608.5,"y":789}]},"14":{"node":"g_right_outer_bottom","path":[{"x":730,"y":759},{"x":687.5,"y":759}]},"46":{"node":"g_out_left_top","path":[{"x":203.0,"y":880},{"x":203.0,"y":893}]},"45":{"node":"g_out_left_top","path":[{"x":292.0,"y":880},{"x":292.0,"y":893}]},"54":{"node":"g_out_right_top","path":[{"x":603.0,"y":880},{"x":603.0,"y":893}]},"53":{"node":"g_out_right_top","path":[{"x":692.0,"y":880},{"x":692.0,"y":893}]},"47":{"node":"g_out_left_side","path":[{"x":215,"y":980},{"x":215,"y":1041.5},{"x":206,"y":1041.5}]},"48":{"node":"g_out_left_low","path":[{"x":170,"y":1180},{"x":170,"y":1104.0},{"x":161,"y":1104.0}]},"49":{"node":"g_out_left_low","path":[{"x":125,"y":1180},{"x":118,"y":1165.0}]},"52":{"node":"g_out_right_side","path":[{"x":649,"y":980},{"x":649,"y":1041.5},{"x":659,"y":1041.5}]},"51":{"node":"g_out_right_low","path":[{"x":694,"y":1180},{"x":694,"y":1104.0},{"x":704,"y":1104.0}]},"50":{"node":"g_out_right_low","path":[{"x":739,"y":1180},{"x":749,"y":1165.0}]}},"first":{"88":{"node":"f_left_lane_top","path":[{"x":225,"y":98.5},{"x":162,"y":98.5}]},"87":{"node":"f_left_lane_top","path":[{"x":225,"y":98.5},{"x":289,"y":98.5}]},"89":{"node":"f_left_lane_top","path":[{"x":225,"y":201.5},{"x":162,"y":201.5}]},"86":{"node":"f_left_lane_top","path":[{"x":225,"y":201.5},{"x":289,"y":201.5}]},"90":{"node":"f_left_lane_mid","path":[{"x":225,"y":305.0},{"x":162,"y":305.0}]},"85":{"node":"f_left_lane_mid","path":[{"x":225,"y":305.0},{"x":289,"y":305.0}]},"91":{"node":"f_left_lane_mid","path":[{"x":225,"y":408.5},{"x":162,"y":408.5}]},"84":{"node":"f_left_lane_mid","path":[{"x":225,"y":408.5},{"x":289,"y":408.5}]},"92":{"node":"f_left_lane_bottom","path":[{"x":225,"y":512.0},{"x":162,"y":512.0}]},"83":{"node":"f_left_lane_bottom","path":[{"x":225,"y":512.0},{"x":289,"y":512.0}]},"79":{"node":"f_mid_lane_top","path":[{"x":572,"y":201.5},{"x":503,"y":201.5}]},"78":{"node":"f_mid_lane_top","path":[{"x":572,"y":201.5},{"x":637,"y":201.5}]},"71":{"node":"f_right_lane_top","path":[{"x":901,"y":201.5},{"x":854,"y":201.5}]},"70":{"node":"f_right_lane_top","path":[{"x":901,"y":201.5},{"x":950,"y":201.5}]},"80":{"node":"f_mid_lane_mid","path":[{"x":572,"y":305.0},{"x":503,"y":305.0}]},"77":{"node":"f_mid_lane_mid","path":[{"x":572,"y":305.0},{"x":637,"y":305.0}]},"72":{"node":"f_right_lane_mid","path":[{"x":901,"y":305.0},{"x":854,"y":305.0}]},"69":{"node":"f_right_lane_mid","path":[{"x":901,"y":305.0},{"x":950,"y":305.0}]},"81":{"node":"f_mid_lane_mid","path":[{"x":572,"y":408.5},{"x":503,"y":408.5}]},"76":{"node":"f_mid_lane_mid","path":[{"x":572,"y":408.5},{"x":637,"y":408.5}]},"73":{"node":"f_right_lane_mid","path":[{"x":901,"y":408.5},{"x":854,"y":408.5}]},"68":{"node":"f_right_lane_mid","path":[{"x":901,"y":408.5},{"x":950,"y":408.5}]},"82":{"node":"f_mid_lane_bottom","path":[{"x":572,"y":512.0},{"x":503,"y":512.0}]},"75":{"node":"f_mid_lane_bottom","path":[{"x":572,"y":512.0},{"x":637,"y":512.0}]},"74":{"node":"f_right_lane_bottom","path":[{"x":901,"y":512.0},{"x":854,"y":512.0}]},"67":{"node":"f_right_lane_bottom","path":[{"x":901,"y":512.0},{"x":950,"y":512.0}]},"66":{"node":"f_green_left_lane","path":[{"x":82.5,"y":758},{"x":82.5,"y":747}]},"63":{"node":"f_green_left_lane","path":[{"x":157.0,"y":758},{"x":157.0,"y":747}]},"62":{"node":"f_green_left_lane","path":[{"x":232.0,"y":758},{"x":232.0,"y":747}]},"65":{"node":"f_green_left_lane","path":[{"x":82.5,"y":758},{"x":82.5,"y":769}]},"64":{"node":"f_green_left_lane","path":[{"x":157.0,"y":758},{"x":157.0,"y":769}]},"61":{"node":"f_green_left_lane","path":[{"x":232.0,"y":758},{"x":232.0,"y":769}]},"59":{"node":"f_green_right_lane","path":[{"x":915.5,"y":758},{"x":915.5,"y":747}]},"57":{"node":"f_green_right_lane","path":[{"x":989.5,"y":758},{"x":989.5,"y":747}]},"55":{"node":"f_green_right_lane","path":[{"x":1063.5,"y":758},{"x":1063.5,"y":747}]},"60":{"node":"f_green_right_lane","path":[{"x":915.5,"y":758},{"x":915.5,"y":769}]},"58":{"node":"f_green_right_lane","path":[{"x":989.5,"y":758},{"x":989.5,"y":769}]},"56":{"node":"f_green_right_lane","path":[{"x":1063.5,"y":758},{"x":1063.5,"y":769}]}}};
+
+    function cloneFloorStart(floor) { return { floor, ...floorStarts[floor], egress:[] }; }
+    function resetMapToFloorStart(floor, shouldSave = true) {
+      currentFloor = floor === "first" ? "first" : "ground";
+      cancelRoute(); mapPosition = cloneFloorStart(currentFloor);
+      document.querySelectorAll(".map-floor").forEach(map => map.classList.toggle("active", map.id === `floor-${currentFloor}`));
+      document.querySelectorAll(".floor-tab").forEach(tab => tab.classList.toggle("active", tab.dataset.floor === currentFloor));
+      requestAnimationFrame(updateMarkerPosition);
+      setRouteMessage(currentFloor === "first" ? "Starting at Escalator Area" : "Starting at Entrance Arch", "Tap a numbered booth to preview a walkway-safe route.");
+      if (shouldSave && appReady) saveProgress();
+    }
+    function switchFloor(floor, button, shouldSave = true) { resetMapToFloorStart(floor, shouldSave); }
+    function mapSize(floor) { return mapDimensions[floor]; }
+    function pointString(points) { return points.map(point => `${Math.round(point.x)},${Math.round(point.y)}`).join(" "); }
+    function graphAdjacency(floor) {
+      const graph=navigationGraphs[floor], adjacency=Object.fromEntries(Object.keys(graph.nodes).map(id=>[id,[]]));
+      graph.edges.forEach(([from,to])=>{ const a=graph.nodes[from],b=graph.nodes[to],weight=Math.hypot(b.x-a.x,b.y-a.y); adjacency[from].push({id:to,weight}); adjacency[to].push({id:from,weight}); });
+      return adjacency;
+    }
+    function shortestNodePath(floor,startId,endId) {
+      if(startId===endId) return [startId];
+      const graph=navigationGraphs[floor],adjacency=graphAdjacency(floor),ids=Object.keys(graph.nodes),distance=Object.fromEntries(ids.map(id=>[id,Infinity])),previous={},open=new Set(ids); distance[startId]=0;
+      while(open.size){ let current=null; open.forEach(id=>{if(current===null||distance[id]<distance[current])current=id;}); if(current===null||distance[current]===Infinity)break; open.delete(current); if(current===endId)break; adjacency[current].forEach(edge=>{if(!open.has(edge.id))return;const candidate=distance[current]+edge.weight;if(candidate<distance[edge.id]){distance[edge.id]=candidate;previous[edge.id]=current;}}); }
+      const path=[];let cursor=endId;while(cursor){path.unshift(cursor);if(cursor===startId)return path;cursor=previous[cursor];} return [startId,endId];
+    }
+    function getBoothApproach(floor,element) {
+      const model=boothApproaches[floor][element.dataset.booth], path=model.path.map(point=>({...point})), finalPoint=path[path.length-1];
+      return {node:model.node,path,point:{x:finalPoint.x,y:finalPoint.y}};
+    }
+    function dedupeAndSimplify(points) {
+      const deduped=points.filter((point,index,array)=>index===0||Math.hypot(point.x-array[index-1].x,point.y-array[index-1].y)>1);
+      return deduped.filter((point,index,array)=>{if(index===0||index===array.length-1)return true;const a=array[index-1],c=array[index+1];return Math.abs((point.x-a.x)*(c.y-point.y)-(point.y-a.y)*(c.x-point.x))>0.01;});
+    }
+    function routeToTarget(floor,target,element) {
+      const graph=navigationGraphs[floor],approach=getBoothApproach(floor,element),startNode=mapPosition.routeNode||floorStarts[floor].routeNode,points=[{x:mapPosition.x,y:mapPosition.y}];
+      if(Array.isArray(mapPosition.egress))points.push(...mapPosition.egress); points.push(graph.nodes[startNode]);
+      shortestNodePath(floor,startNode,approach.node).slice(1).forEach(id=>points.push(graph.nodes[id])); points.push(...approach.path);
+      return {points:dedupeAndSimplify(points),approach};
+    }
+    function renderRoute(floor,points) {
+      document.querySelectorAll(".route-line,.route-line-under").forEach(element=>element.setAttribute("points",""));
+      const safe=points.length>1?points:[points[0],{x:points[0].x+2,y:points[0].y+2}];
+      document.getElementById(`route-${floor}`).setAttribute("points",pointString(safe)); document.getElementById(`route-under-${floor}`).setAttribute("points",pointString(safe));
+      console.log("GIDF walkway route:",safe);
+    }
+    function selectBooth(element) {
+      const floor=element.dataset.floor;if(floor!==currentFloor)resetMapToFloorStart(floor,false);cancelRoute();
+      const sample=sampleBoothProfiles[element.dataset.booth];const target={booth:element.dataset.booth,floor,name:sample?sample.vendor:element.dataset.name||"Vendor to be confirmed",category:sample?sample.category:element.dataset.category||"Other",icon:sample?sample.icon:element.dataset.icon||"🏪"},route=routeToTarget(floor,target,element);
+      mapSelectedBoothCode=target.booth;target.x=route.approach.point.x;target.y=route.approach.point.y;selectedRoute={target,points:route.points,approach:route.approach};renderRoute(floor,route.points);
+      setRouteMessage(`Route to Booth ${target.booth}`,"Cyan line follows the open walkways and stops at the booth edge.");document.getElementById("route-action").disabled=false;document.getElementById("route-detail-action").disabled=false;
+    }
+    function setRouteMessage(title,copy) { document.getElementById("map-status").innerHTML=`<strong>${title}</strong>${copy}`; }
+    function confirmReachedDestination() {
+      if(!selectedRoute||routeAnimation)return;document.getElementById("route-action").disabled=true;setRouteMessage(`Walking to Booth ${selectedRoute.target.booth}`,"Following the highlighted walkway…");
+      animateRoute(selectedRoute.points,()=>{const {target,approach}=selectedRoute;mapPosition={floor:target.floor,x:target.x,y:target.y,booth:target.booth,name:target.name,routeNode:approach.node,egress:[...approach.path].reverse()};updateMarkerPosition();addVisitedBooth(target);setRouteMessage(`Reached Booth ${target.booth}`,"Saved to your visited booths ✓");showToast(`Booth ${target.booth} added to Visited Booths ✓`);selectedRoute=null;saveProgress();});
+    }
+    function animateRoute(points,onDone) {
+      const segments=[];let total=0;for(let index=1;index<points.length;index++){const a=points[index-1],b=points[index],length=Math.hypot(b.x-a.x,b.y-a.y);if(length){segments.push({a,b,length,start:total});total+=length;}}
+      if(!total){onDone();return;}let startTimestamp=null;const duration=Math.max(1000,Math.min(4200,total*2.15));
+      function frame(timestamp){if(startTimestamp===null)startTimestamp=timestamp;const distance=Math.min(total,((timestamp-startTimestamp)/duration)*total);let segment=segments[segments.length-1];for(const item of segments){if(distance<=item.start+item.length){segment=item;break;}}const ratio=Math.max(0,Math.min(1,(distance-segment.start)/segment.length));mapPosition={...mapPosition,floor:currentFloor,x:segment.a.x+(segment.b.x-segment.a.x)*ratio,y:segment.a.y+(segment.b.y-segment.a.y)*ratio,booth:null,name:"Walking"};updateMarkerPosition();if(distance<total)routeAnimation=requestAnimationFrame(frame);else{routeAnimation=null;onDone();}} routeAnimation=requestAnimationFrame(frame);
+    }
+    function cancelRoute() {if(routeAnimation){cancelAnimationFrame(routeAnimation);routeAnimation=null;}selectedRoute=null;document.querySelectorAll(".route-line,.route-line-under").forEach(element=>element.setAttribute("points",""));const button=document.getElementById("route-action");if(button)button.disabled=true;const detailButton=document.getElementById("route-detail-action");if(detailButton)detailButton.disabled=true;}
+    function updateMarkerPosition() {
+      const marker=document.getElementById("map-avatar-marker"),canvas=document.getElementById("map-canvas");if(!marker||!canvas)return;const size=mapSize(mapPosition.floor),width=canvas.clientWidth,height=canvas.clientHeight,scale=Math.min(width/size.w,height/size.h),renderedWidth=size.w*scale,renderedHeight=size.h*scale,offsetX=(width-renderedWidth)/2,offsetY=(height-renderedHeight)/2;
+      marker.style.left=`${offsetX+mapPosition.x*scale}px`;marker.style.top=`${offsetY+mapPosition.y*scale}px`;marker.style.display=mapPosition.floor===currentFloor?"block":"none";if(avatarSaved){const location=mapPosition.booth?`Currently at Booth ${mapPosition.booth}`:`Starting at ${mapPosition.name}`;document.getElementById("map-avatar-location").textContent=location;}
+    }
+    function updateMarkerVisibility() {updateMarkerPosition();}
+    function goToBooth(code) {const element=Array.from(document.querySelectorAll(".map-booth")).find(item=>item.dataset.booth===String(code));if(!element)return;showScreen("screen-map",false);if(element.dataset.floor!==currentFloor)resetMapToFloorStart(element.dataset.floor,false);setTimeout(()=>selectBooth(element),100);}
+    window.addEventListener("resize",()=>requestAnimationFrame(updateMarkerPosition));
+
+    /* @section: avatar-logic */
+    function assetPath(file) { return `./images/${file}`; }
+
+    function setImage(element, file, visible = true) {
+      if (!element) return;
+      if (file) element.src = assetPath(file);
+      element.style.display = visible ? "block" : "none";
+    }
+
+    function applyFullAvatarOffsets() {
+      const hair = document.getElementById("avatarHair");
+      const outfit = document.getElementById("avatarOutfit");
+      if (selectedHair >= 0) {
+        const offset = hairOffsets[currentGender][selectedHair];
+        hair.style.top = `${offset.top}px`;
+        hair.style.left = `${offset.left}px`;
+      }
+      if (selectedOutfit >= 0) {
+        const offset = outfitOffsets[currentGender][selectedOutfit];
+        outfit.style.top = `${offset.top}px`;
+        outfit.style.left = `${offset.left}px`;
+      }
+    }
+
+    function applyScaledOffsets(hairElement, outfitElement, scale) {
+      if (selectedHair >= 0 && hairElement) {
+        const offset = hairOffsets[currentGender][selectedHair];
+        hairElement.style.top = `${offset.top * scale}px`;
+        hairElement.style.left = `${4 + offset.left * scale}px`;
+      }
+      if (selectedOutfit >= 0 && outfitElement) {
+        const offset = outfitOffsets[currentGender][selectedOutfit];
+        outfitElement.style.top = `${offset.top * scale}px`;
+        outfitElement.style.left = `${4 + offset.left * scale}px`;
+      }
+    }
+
+    function buildSelectors(gender) {
+      const hairRow = document.getElementById("hair-selector");
+      const outfitRow = document.getElementById("outfit-selector");
+      hairRow.innerHTML = hairData[gender].map((item, index) => `
+        <button class="selector-thumb ${index === selectedHair ? "active" : ""}" type="button" onclick="pickHair(${index})">
+          <img src="${assetPath(item.file)}" alt="${item.name}">
+          <span>${item.name}</span>
+        </button>
+      `).join("");
+      outfitRow.innerHTML = outfitData[gender].map((item, index) => `
+        <button class="selector-thumb ${index === selectedOutfit ? "active" : ""}" type="button" onclick="pickOutfit(${index})">
+          <img src="${assetPath(item.file)}" alt="${item.name}">
+          <span>${item.name}</span>
+        </button>
+      `).join("");
+    }
+
+    function updateAvatarPreview() {
+      setImage(document.getElementById("avatarBase"), `${currentGender}-base.png`, true);
+      setImage(document.getElementById("avatarHair"), selectedHair >= 0 ? hairData[currentGender][selectedHair].file : null, selectedHair >= 0);
+      setImage(document.getElementById("avatarOutfit"), selectedOutfit >= 0 ? outfitData[currentGender][selectedOutfit].file : null, selectedOutfit >= 0);
+      applyFullAvatarOffsets();
+    }
+
+    function pickHair(index) {
+      selectedHair = selectedHair === index ? -1 : index;
+      buildSelectors(currentGender);
+      updateAvatarPreview();
+      if (appReady) saveProgress();
+    }
+
+    function pickOutfit(index) {
+      selectedOutfit = selectedOutfit === index ? -1 : index;
+      buildSelectors(currentGender);
+      updateAvatarPreview();
+      if (appReady) saveProgress();
+    }
+
+    function switchGender(gender) {
+      currentGender = gender === "male" ? "male" : "female";
+      selectedHair = 0;
+      selectedOutfit = 0;
+      document.getElementById("btn-female").classList.toggle("active", currentGender === "female");
+      document.getElementById("btn-male").classList.toggle("active", currentGender === "male");
+      buildSelectors(currentGender);
+      updateAvatarPreview();
+      if (appReady) saveProgress();
+    }
+
+    function updateAvatarName() {
+      const value = document.getElementById("avatar-name-input").value.trim();
+      avatarName = value || "Festival Goer";
+      if (appReady) saveProgress();
+    }
+
+    function saveAvatar() {
+      updateAvatarName();
+      avatarSaved = true;
+      renderSavedAvatar();
+      saveProgress();
+      showToast(`Avatar saved! Welcome, ${avatarName} 🎉`);
+      setTimeout(() => showScreen("screen-map"), 650);
+    }
+
+    function renderSavedAvatar() {
+      const bar = document.getElementById("map-avatar-bar");
+      bar.classList.toggle("visible", avatarSaved);
+      document.getElementById("map-avatar-name").textContent = avatarName;
+      document.getElementById("map-avatar-location").textContent = mapPosition.booth ? `Currently at Booth ${mapPosition.booth}` : `Starting at ${mapPosition.name}`;
+
+      const baseFile = `${currentGender}-base.png`;
+      const hairFile = selectedHair >= 0 ? hairData[currentGender][selectedHair].file : null;
+      const outfitFile = selectedOutfit >= 0 ? outfitData[currentGender][selectedOutfit].file : null;
+
+      setImage(document.getElementById("map-avatar-base"), baseFile, avatarSaved);
+      setImage(document.getElementById("map-avatar-hair"), hairFile, avatarSaved && selectedHair >= 0);
+      setImage(document.getElementById("map-avatar-outfit"), outfitFile, avatarSaved && selectedOutfit >= 0);
+      applyScaledOffsets(document.getElementById("map-avatar-hair"), document.getElementById("map-avatar-outfit"), 0.30);
+
+      setImage(document.getElementById("marker-avatar-base"), baseFile, avatarSaved);
+      setImage(document.getElementById("marker-avatar-hair"), hairFile, avatarSaved && selectedHair >= 0);
+      setImage(document.getElementById("marker-avatar-outfit"), outfitFile, avatarSaved && selectedOutfit >= 0);
+      const markerHair = document.getElementById("marker-avatar-hair");
+      const markerOutfit = document.getElementById("marker-avatar-outfit");
+      if (selectedHair >= 0) {
+        const offset = hairOffsets[currentGender][selectedHair];
+        markerHair.style.top = `${offset.top * 0.275}px`;
+        markerHair.style.left = `${offset.left * 0.275}px`;
+      }
+      if (selectedOutfit >= 0) {
+        const offset = outfitOffsets[currentGender][selectedOutfit];
+        markerOutfit.style.top = `${offset.top * 0.275}px`;
+        markerOutfit.style.left = `${offset.left * 0.275}px`;
+      }
+      document.getElementById("map-avatar-marker").classList.toggle("saved", avatarSaved);
+    }
+
+    /* @section: booth-details-logic */
+    function getBoothDetails(code) {
+      const booth = getBoothData().find(item => item.booth === String(code));
+      if (!booth) return null;
+      const sample = sampleBoothProfiles[booth.booth];
+      return {
+        ...booth,
+        vendor: sample ? sample.vendor : "Vendor to be confirmed",
+        description: sample ? sample.description : "This booth is reserved in the festival map. The organiser will add the confirmed vendor profile, products and visitor information after final booth allocation.",
+        highlights: sample ? sample.highlights : ["Vendor TBC", "Products TBC", "Promotion TBC"],
+        promotion: sample ? sample.promotion : "No confirmed promotion yet. This placeholder will be replaced when the vendor information is available.",
+        opening: sample ? sample.opening : "To be confirmed"
+      };
+    }
+
+    function openBoothDetails(code, returnScreen = currentScreen) {
+      const details = getBoothDetails(code);
+      if (!details) { showToast("Booth details could not be found."); return; }
+      selectedDetailBooth = details;
+      boothDetailReturnScreen = ["screen-map", "screen-search", "screen-visited"].includes(returnScreen) ? returnScreen : "screen-search";
+      renderBoothDetails();
+      showScreen("screen-booth-detail");
+    }
+
+    function openSelectedBoothDetails() {
+      if (!mapSelectedBoothCode) { showToast("Choose a booth on the map first."); return; }
+      openBoothDetails(mapSelectedBoothCode, "screen-map");
+    }
+
+    function renderBoothDetails() {
+      if (!selectedDetailBooth) return;
+      const item = selectedDetailBooth;
+      document.getElementById("detail-floor-badge").textContent = item.floor === "ground" ? "Ground Floor" : "First Floor";
+      document.getElementById("detail-icon").textContent = item.icon;
+      document.getElementById("detail-booth-label").textContent = `Booth ${item.booth}`;
+      document.getElementById("detail-vendor-name").textContent = item.vendor;
+      document.getElementById("detail-category").textContent = item.category;
+      document.getElementById("detail-opening").textContent = item.opening;
+      document.getElementById("detail-description").textContent = item.description;
+      document.getElementById("detail-promotion").textContent = item.promotion;
+      document.getElementById("detail-highlights").innerHTML = item.highlights.map(highlight => `<span class="detail-chip">${highlight}</span>`).join("");
+    }
+
+    function closeBoothDetails() {
+      const returnScreen = boothDetailReturnScreen;
+      showScreen(returnScreen, true, returnScreen === "screen-map");
+    }
+
+    function navigateFromBoothDetails() {
+      if (!selectedDetailBooth) return;
+      goToBooth(selectedDetailBooth.booth);
+    }
+
+    /* @section: search-logic */
+    function getBoothData() {
+      return Array.from(document.querySelectorAll(".map-booth")).map(button => {
+        const sample = sampleBoothProfiles[button.dataset.booth];
+        return {
+          booth: button.dataset.booth,
+          floor: button.dataset.floor,
+          name: sample ? sample.vendor : button.dataset.name || "Vendor to be confirmed",
+          category: sample ? sample.category : button.dataset.category || "Other",
+          icon: sample ? sample.icon : button.dataset.icon || "🏪",
+          isSample: Boolean(sample)
+        };
+      });
+    }
+
+    function filterCategory(category, button) {
+      const categoryExists = getBoothData().some(booth => booth.category === category);
+      if (category !== "All" && !categoryExists) {
+        showToast("Categories will be enabled after final vendor allocation.");
+        return;
+      }
+      activeCategory = category;
+      document.querySelectorAll(".category-chip").forEach(chip => chip.classList.toggle("active", chip === button));
+      runSearch();
+    }
+
+    function runSearch() {
+      const input = document.getElementById("search-input");
+      if (!input) return;
+      const query = input.value.trim().toLowerCase();
+      const booths = getBoothData();
+      const results = booths.filter(item => {
+        const matchesCategory = activeCategory === "All" || item.category === activeCategory;
+        const haystack = `${item.booth} ${item.name} ${item.category} ${item.floor}`.toLowerCase();
+        return matchesCategory && haystack.includes(query);
+      });
+      document.getElementById("results-title").textContent = query ? `Results for “${input.value.trim()}”` : activeCategory === "All" ? "All booths" : `${activeCategory} booths`;
+      renderSearchResults(results);
+    }
+
+    function renderSearchResults(results) {
+      const container = document.getElementById("search-results");
+      if (!results.length) {
+        container.innerHTML = `<div class="card search-message"><strong>No booths found</strong><p>Try a vendor name, product category or booth number.</p></div>`;
+        return;
+      }
+      container.innerHTML = results.map(item => {
+        const floorLabel = item.floor === "ground" ? "Ground Floor" : "First Floor";
+        const displayName = item.name === "Vendor to be confirmed" ? `Booth ${item.booth} · Vendor TBC` : item.name;
+        return `
+          <article class="card search-result">
+            <div class="result-icon">${item.icon}</div>
+            <div class="result-copy"><strong>${displayName}</strong><span>${item.category} · ${floorLabel}${item.isSample ? " · Sample" : ""}</span></div>
+            <div class="result-actions"><button class="result-detail" type="button" onclick="openBoothDetails('${item.booth}', 'screen-search')">Details</button><button class="result-go" type="button" onclick="goToBooth('${item.booth}')">Navigate ${item.booth}</button></div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    /* @section: visited-logic */
+    function addVisitedBooth(item) {
+      const now = new Date();
+      const existing = visitedBooths.find(entry => entry.booth === item.booth);
+      const visit = {
+        ...item,
+        visitedAt: now.toISOString(),
+        timeLabel: now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+      };
+      if (existing) Object.assign(existing, visit);
+      else visitedBooths.unshift(visit);
+      renderVisitedBooths();
+      markVisitedBoothsOnMap();
+      saveProgress();
+    }
+
+    function renderVisitedBooths() {
+      const list = document.getElementById("visited-list");
+      if (!list) return;
+      document.getElementById("visit-count").textContent = visitedBooths.length;
+      document.getElementById("visit-progress").style.width = `${Math.min(100, visitedBooths.length * 10)}%`;
+
+      if (!visitedBooths.length) {
+        list.innerHTML = `
+          <div class="card empty-visited">
+            <div class="empty-icon">🗺️</div>
+            <strong>No booths visited yet</strong>
+            <p>Open the map and tap a booth. Your avatar will move there and the booth will be saved here automatically.</p>
+            <button class="secondary-button" type="button" onclick="showScreen('screen-map')">Explore the map</button>
+          </div>
+        `;
+      } else {
+        list.innerHTML = visitedBooths.map(item => `
+          <article class="card visited-row">
+            <div class="visited-check">✓</div>
+            <div class="visited-copy"><strong>${item.name === "Vendor to be confirmed" ? `Booth ${item.booth}` : item.name}</strong><span>${item.booth} · ${item.floor === "ground" ? "Ground Floor" : "First Floor"}</span></div>
+            <div class="visited-time">${item.timeLabel || "Saved"}</div>
+          </article>
+        `).join("");
+      }
+
+      const stamps = ["🪔", "🌺", "✨", "🎉"];
+      document.getElementById("stamp-grid").innerHTML = stamps.map((stamp, index) => `<div class="stamp ${visitedBooths.length >= (index + 1) * 2 ? "" : "locked"}">${visitedBooths.length >= (index + 1) * 2 ? stamp : "🔒"}</div>`).join("");
+    }
+
+    function markVisitedBoothsOnMap() {
+      const visitedCodes = new Set(visitedBooths.map(item => item.booth));
+      document.querySelectorAll(".map-booth").forEach(button => button.classList.toggle("visited", visitedCodes.has(button.dataset.booth)));
+    }
+
+    function clearVisitedBooths() {
+      if (!visitedBooths.length) { showToast("Your visited list is already empty."); return; }
+      if (!window.confirm("Clear all visited booths from this browser?")) return;
+      visitedBooths = [];
+      renderVisitedBooths();
+      markVisitedBoothsOnMap();
+      saveProgress();
+      showToast("Visited booth list cleared.");
+    }
+
+    /* @section: persistence */
+    function saveProgress() {
+      if (!appReady) return;
+      const progress = {
+        screen: currentScreen === "screen-booth-detail" ? boothDetailReturnScreen : currentScreen,
+        floor: currentFloor,
+        gender: currentGender,
+        hair: selectedHair,
+        outfit: selectedOutfit,
+        name: avatarName,
+        avatarSaved,
+        mapPosition,
+        visitedBooths,
+        activeCategory
+      };
+      try { localStorage.setItem(SAVE_KEY, JSON.stringify(progress)); }
+      catch (error) { console.warn("Progress could not be saved in this browser.", error); }
+    }
+
+    function loadProgress() {
+      let progress = null;
+      try {
+        const raw = localStorage.getItem(SAVE_KEY);
+        progress = raw ? JSON.parse(raw) : null;
+      } catch (error) {
+        console.warn("Saved progress could not be read.", error);
+      }
+      if (!progress) return;
+
+      currentGender = progress.gender === "male" ? "male" : "female";
+      selectedHair = Number.isInteger(progress.hair) ? progress.hair : 0;
+      selectedOutfit = Number.isInteger(progress.outfit) ? progress.outfit : 0;
+      avatarName = typeof progress.name === "string" && progress.name.trim() ? progress.name : "Festival Goer";
+      avatarSaved = Boolean(progress.avatarSaved);
+      currentFloor = progress.floor === "first" ? "first" : "ground";
+      currentScreen = VALID_SCREENS.includes(progress.screen) ? progress.screen : "screen-welcome";
+      if (progress.screen === "screen-home") currentScreen = "screen-welcome";
+      /* Location is intentionally not restored: every Map entry begins at the selected floor anchor. */
+      mapPosition = cloneFloorStart(currentFloor);
+      visitedBooths = Array.isArray(progress.visitedBooths) ? progress.visitedBooths : [];
+      activeCategory = typeof progress.activeCategory === "string" ? progress.activeCategory : "All";
+    }
+
+    /* @section: utility */
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+      clearTimeout(showToast.timer);
+      showToast.timer = setTimeout(() => toast.classList.remove("show"), 1900);
+    }
+
+    /* @section: initialization */
+    document.addEventListener("DOMContentLoaded", () => {
+      buildNavigation();
+      loadProgress();
+
+      document.getElementById("btn-female").classList.toggle("active", currentGender === "female");
+      document.getElementById("btn-male").classList.toggle("active", currentGender === "male");
+      document.getElementById("avatar-name-input").value = avatarName === "Festival Goer" ? "" : avatarName;
+
+      buildSelectors(currentGender);
+      updateAvatarPreview();
+      renderSavedAvatar();
+      renderVisitedBooths();
+      markVisitedBoothsOnMap();
+      updateMarkerPosition();
+      document.querySelectorAll(".map-floor").forEach(map => map.classList.toggle("active", map.id === `floor-${currentFloor}`));
+      document.querySelectorAll(".floor-tab").forEach(tab => tab.classList.toggle("active", tab.dataset.floor === currentFloor));
+
+      document.querySelectorAll(".category-chip").forEach(chip => chip.classList.toggle("active", chip.dataset.category === activeCategory));
+      if (!document.querySelector(".category-chip.active")) {
+        activeCategory = "All";
+        document.querySelector('.category-chip[data-category="All"]').classList.add("active");
+      }
+      runSearch();
+      showScreen(currentScreen, false);
+      appReady = true;
+      saveProgress();
+    });
+  </script>
+</body>
+</html>
