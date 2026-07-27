@@ -451,8 +451,9 @@
     .detail-meta { padding:12px; }
     .detail-meta span { display:block; color:#A17D8C; font-size:7px; font-weight:900; text-transform:uppercase; letter-spacing:.06em; }
     .detail-meta strong { display:block; margin-top:5px; color:#4B173E; font-size:10px; line-height:1.35; }
-    .detail-chip-row { margin-top:9px; display:flex; flex-wrap:wrap; gap:6px; }
-    .detail-chip { padding:7px 9px; border-radius:999px; color:#7A3C56; background:#FFF0D7; font-size:8px; font-weight:900; }
+    .detail-social { margin-top:8px; color:var(--muted); font-size:9px; line-height:1.5; overflow-wrap:anywhere; }
+    .detail-social a { color:#B42967; font-weight:1000; text-decoration:none; }
+    .detail-social a:focus-visible { outline:2px solid var(--teal); outline-offset:3px; border-radius:4px; }
     .detail-actions { margin-top:12px; display:grid; gap:8px; }
 
     /* @section: avatar-screen */
@@ -692,8 +693,11 @@
           <button class="category-chip" type="button" data-category="Food" onclick="filterCategory('Food', this)">Food</button>
           <button class="category-chip" type="button" data-category="Beauty" onclick="filterCategory('Beauty', this)">Beauty</button>
           <button class="category-chip" type="button" data-category="Accessories" onclick="filterCategory('Accessories', this)">Accessories</button>
+          <button class="category-chip" type="button" data-category="Home & Lifestyle" onclick="filterCategory('Home & Lifestyle', this)">Home & Lifestyle</button>
+          <button class="category-chip" type="button" data-category="Lifestyle" onclick="filterCategory('Lifestyle', this)">Lifestyle</button>
+          <button class="category-chip" type="button" data-category="Spiritual & Wellness" onclick="filterCategory('Spiritual & Wellness', this)">Spiritual & Wellness</button>
         </div>
-        <p id="search-category-note" class="search-category-note">A few clearly labelled sample booths are included for testing. Final vendor names and categories will replace them after booth allocation.</p>
+        <p id="search-category-note" class="search-category-note">Search all 92 booths by booth number, vendor, category or product. Unallocated booths remain listed as Vendor TBC.</p>
         <p class="section-title" id="results-title">All booths</p>
         <div id="search-results"></div>
       </div>
@@ -709,17 +713,15 @@
       <div class="screen-scroll">
         <button class="detail-back" type="button" onclick="closeBoothDetails()">← Return to previous page</button>
         <article class="card booth-detail-hero">
-          <div class="detail-badges"><span id="detail-floor-badge" class="detail-badge">Ground Floor</span><span class="detail-badge sample">Sample information</span></div>
+          <div class="detail-badges"><span id="detail-floor-badge" class="detail-badge">Ground Floor</span></div>
           <div class="booth-detail-title"><div id="detail-icon" class="detail-icon">🏪</div><div><small id="detail-booth-label">Booth 1</small><h2 id="detail-vendor-name">Vendor to be confirmed</h2></div></div>
         </article>
-        <div class="detail-notice"><strong>Demo content only.</strong> The vendor allocation, products, promotions and opening details below are temporary examples. Replace them when the organiser confirms the real information.</div>
         <div class="detail-meta-grid" style="margin-top:9px">
+          <article class="card detail-meta"><span>Booth Number</span><strong id="detail-booth-number">1</strong></article>
           <article class="card detail-meta"><span>Category</span><strong id="detail-category">Other</strong></article>
-          <article class="card detail-meta"><span>Availability</span><strong id="detail-opening">During festival hours</strong></article>
         </div>
-        <article class="card detail-section"><h3>About this booth</h3><p id="detail-description">Temporary booth information will appear here.</p></article>
-        <article class="card detail-section"><h3>Sample highlights</h3><div id="detail-highlights" class="detail-chip-row"></div></article>
-        <article class="card detail-section"><h3>Sample promotion</h3><p id="detail-promotion">Promotion details to be confirmed.</p></article>
+        <article class="card detail-section"><h3>What they sell</h3><p id="detail-sells">Vendor information unavailable.</p></article>
+        <article class="card detail-section"><h3>Social media / website</h3><div id="detail-social" class="detail-social">Not available</div></article>
         <div class="detail-actions"><button class="primary-button" type="button" onclick="navigateFromBoothDetails()">Navigate to Booth</button><button class="secondary-button" type="button" onclick="closeBoothDetails()">Back</button></div>
       </div>
       <nav class="bottom-nav" aria-label="Primary navigation"></nav>
@@ -910,13 +912,61 @@
     const SAVE_KEY = "gidfGoProgress";
     const VALID_SCREENS = ["screen-welcome", "screen-map", "screen-search", "screen-booth-detail", "screen-avatar", "screen-visited", "screen-info"];
 
-    /* @section: sample-booth-profiles — temporary demo content only */
-    const sampleBoothProfiles = {
-      "8": { vendor: "Rangoli Threads (Sample)", category: "Fashion", icon: "👗", description: "A temporary example fashion booth featuring colourful festive clothing and coordinated family looks.", highlights: ["Festive sarees", "Kurta sets", "Family styles"], promotion: "Sample offer: selected festive pieces from RM49. Final promotion to be confirmed.", opening: "Sample: 10:00 AM–10:00 PM" },
-      "20": { vendor: "Spice Lane Kitchen (Sample)", category: "Food", icon: "🍛", description: "A temporary example food booth serving familiar Indian comfort dishes, snacks and festival treats.", highlights: ["Mini thali", "Masala tea", "Sweet treats"], promotion: "Sample offer: festival tasting set at a promotional price. Final menu and price to be confirmed.", opening: "Sample: 11:00 AM–10:00 PM" },
-      "34": { vendor: "Glow & Grace (Sample)", category: "Beauty", icon: "✨", description: "A temporary example beauty booth presenting festive makeup ideas, skincare samples and quick styling consultations.", highlights: ["Makeup demo", "Skincare samples", "Festive styling"], promotion: "Sample offer: complimentary mini consultation with selected purchases. Final terms to be confirmed.", opening: "Sample: 10:00 AM–9:30 PM" },
-      "57": { vendor: "Jewel Box Studio (Sample)", category: "Accessories", icon: "💎", description: "A temporary example accessories booth with statement jewellery, bangles and colourful festive add-ons.", highlights: ["Bangles", "Earrings", "Gift sets"], promotion: "Sample offer: bundle savings on selected accessory sets. Final promotion to be confirmed.", opening: "Sample: 10:00 AM–10:00 PM" },
-      "79": { vendor: "Heritage Hands (Sample)", category: "Cultural Crafts", icon: "🎨", description: "A temporary example craft booth showcasing decorative pieces inspired by traditional patterns and handmade techniques.", highlights: ["Handmade décor", "Gift items", "Craft demo"], promotion: "Sample offer: small keepsake with qualifying purchases, while sample stocks last. Final details to be confirmed.", opening: "Sample: 10:30 AM–9:30 PM" }
+    /* @section: booth-profiles — approved visitor-facing fields only */
+    const boothProfiles = {
+      "1": { vendor: "Sasha Designs", category: "Accessories", group: "Accessories", icon: "💎", sells: "Handmade accessories.", social: "sashadesigns__" },
+      "2": { vendor: "Anicham (KPC Trading)", category: "Clothing & Apparel", group: "Fashion", icon: "👗", sells: "Men’s half-sleeve kurtas and juttis.", social: "Anicham_9" },
+      "3": { vendor: "TSYARA ENTERPRISE", category: "Clothing & Apparel", group: "Fashion", icon: "👗", sells: "Traditional clothing for men, women and children.", social: "@tsyara_yara" },
+      "5": { vendor: "Kays Collections", category: "Clothing & Apparel", group: "Fashion", icon: "👗", sells: "Children’s and men’s attire.", social: "Kays Collections" },
+      "6": { vendor: "Luxyz Creations", category: "Lifestyle", group: "Lifestyle", icon: "🕯️", sells: "Candles, soaps and self-care products.", social: "Instagram · luxyzcreations", socialUrl: "https://www.instagram.com/luxyzcreations" },
+      "7": { vendor: "Loome Cottura", category: "Clothing & Apparel", group: "Fashion", icon: "👗", sells: "Hand-block-printed pyjamas, bags, sofa throws and bath towels.", social: "Loomecottura" },
+      "8": { vendor: "By Silk Empire", category: "Clothing & Apparel", group: "Fashion", icon: "👗", sells: "Cotton and silk sarees.", social: "Instagram · bysilkempire", socialUrl: "https://www.instagram.com/bysilkempire" },
+      "9": { vendor: "Petite Posh Ventures", category: "Clothing & Apparel", group: "Fashion", icon: "👗", sells: "Comfortable festive and ethnic clothing for babies and children, including kurtas, lehengas, sharara sets, festive dresses and partywear.", social: "Petite Posh Ventures" },
+      "10": { vendor: "Summer Couture Fashion", category: "Clothing & Apparel", group: "Fashion", icon: "👗", sells: "Indo-fusion women’s fashion made with block-printed fabrics.", social: "Summercollection_my" },
+      "11": { vendor: "SHAASVINIVI Boutique", category: "Clothing & Apparel", group: "Fashion", icon: "👗", sells: "Kurtis.", social: "SHAASVINIVI Boutique" },
+      "12": { vendor: "House of Vogue", category: "Clothing & Apparel", group: "Fashion", icon: "👗", sells: "Ladies’ and men’s wear.", social: "houseofvogueofficial" },
+      "13": { vendor: "Thisa Trading", category: "Accessories", group: "Accessories", icon: "💎", sells: "Imitation accessories and ladies’ footwear.", social: "Thisa Jewellery Collection" },
+      "14": { vendor: "Roots of Bengal", category: "Lifestyle", group: "Lifestyle", icon: "🎨", sells: "Artisan products from Bengal.", social: "rootsof bengal" },
+      "15": { vendor: "AALAM ART", category: "Home Decor", group: "Home & Lifestyle", icon: "🖼️", sells: "Statues and paintings.", social: "aalamart" },
+      "16": { vendor: "AALAM ART", category: "Home Decor", group: "Home & Lifestyle", icon: "🖼️", sells: "Statues and paintings.", social: "aalamart" },
+      "17": { vendor: "AALAM ART", category: "Home Decor", group: "Home & Lifestyle", icon: "🖼️", sells: "Statues and paintings.", social: "aalamart" },
+      "18": { vendor: "AALAM ART", category: "Home Decor", group: "Home & Lifestyle", icon: "🖼️", sells: "Statues and paintings.", social: "aalamart" },
+      "20": { vendor: "Nila Silks & Cotton", category: "Clothing & Apparel", group: "Fashion", icon: "👗", sells: "Sarees, Punjabi suits, aari-work blouse pieces, children’s pavadai and boys’ and men’s kurtas.", social: "Nila Silks & Cotton" },
+      "21": { vendor: "Rishi Handicraft", category: "Home Decor", group: "Home & Lifestyle", icon: "🏺", sells: "Unique home décor products.", social: "Rishihandicraft" },
+      "22": { vendor: "Rishi Handicraft", category: "Home Decor", group: "Home & Lifestyle", icon: "🏺", sells: "Unique home décor products.", social: "Rishihandicraft" },
+      "23": { vendor: "Jeaanys Garden", category: "Home Decor", group: "Home & Lifestyle", icon: "🏺", sells: "Mandala-art pots and boards.", social: "Jeaanys_garden" },
+      "24": { vendor: "Grace & Glamour", category: "Clothing & Apparel", group: "Fashion", icon: "👗", sells: "Designer sarees and ready-to-wear clothing.", social: "thegracenglamour" },
+      "25": { vendor: "Tribal Asia Skincare", category: "Skincare and Cosmetics", group: "Beauty", icon: "✨", sells: "Ayurvedic organic-based skincare, haircare and cosmetics.", social: "Tribal Asia Skincare" },
+      "26": { vendor: "Make It Sweet", category: "Food & Beverages", group: "Food", icon: "🍪", sells: "Desserts, cookies and murukku.", social: "Make.it.sweet_by_krysha" },
+      "27": { vendor: "WRVProducts", category: "Food & Beverages", group: "Food", icon: "🥫", sells: "Bottled curry pickles.", social: "Instagram · rascurrypickle", socialUrl: "https://www.instagram.com/rascurrypickle" },
+      "28": { vendor: "Mitz Fashion", category: "Accessories", group: "Accessories", icon: "💎", sells: "Micro-gold-plated and GS jewellery.", social: "Mitz Fashion" },
+      "29": { vendor: "Click To Cart Ventures / Lokal Snacks", category: "Food & Beverages", group: "Food", icon: "🍘", sells: "Local and Indian snacks, including tapioca and banana snacks, murukku, achu murukku, omam podi, pagoda, acar, inji puli and puliyodharai.", social: "Instagram · lokal.snacks", socialUrl: "https://www.instagram.com/lokal.snacks" },
+      "30": { vendor: "Sithara Enterprise", category: "Clothing & Apparel", group: "Fashion", icon: "👗", sells: "Kurtis, sarees and kurtas.", social: "Instagram · sithara.co", socialUrl: "https://www.instagram.com/sithara.co" },
+      "31": { vendor: "Libaas", category: "Clothing & Apparel", group: "Fashion", icon: "👗", sells: "North Indian wear.", social: "Libaas Exclusive" },
+      "32": { vendor: "Bodhi Series", category: "Skincare", group: "Beauty", icon: "✨", sells: "Organic, natural and homemade skincare products.", social: "bodhi.series" },
+      "35": { vendor: "GR Collections", category: "Clothing & Apparel", group: "Fashion", icon: "👗", sells: "Designer boutique clothing in Bollywood fashion styles.", social: "TikTok · gr.collections" },
+      "36": { vendor: "Bindhu Spices", category: "Food & Beverages", group: "Food", icon: "🥭", sells: "Achar.", social: "Bindhuspices" },
+      "37": { vendor: "Spicyjar", category: "Food & Beverages", group: "Food", icon: "🍘", sells: "Homemade snacks, including sippi, bitter-gourd chips and snake-gourd chips.", social: "Instagram · @spicyjar9", socialUrl: "https://www.instagram.com/spicyjar9" },
+      "38": { vendor: "Amodini Fashion House", category: "Clothing & Apparel", group: "Fashion", icon: "👗", sells: "Indian ethnic wear and vegan cosmetics.", social: "Instagram · @amodiniboutique2010 · @igirl_vegan" },
+      "39": { vendor: "Kairavt", category: "Clothing & Apparel", group: "Fashion", icon: "👗", sells: "Chikankari and Jaipur kurtis and pouches.", social: "kai.ravt" },
+      "40": { vendor: "24K GOLDEN ART", category: "Sami Products", group: "Spiritual & Wellness", icon: "✨", sells: "Gold-leaf sami products.", social: "24K GOLDEN ART" },
+      "41": { vendor: "Essential SoapCrafter Enterprise", category: "Natural Herbal Products", group: "Beauty", icon: "🌿", sells: "Natural herbal products.", social: "herbs_and_home_ / herbs_and_home" },
+      "42": { vendor: "Prethi Collections", category: "Clothing & Apparel", group: "Fashion", icon: "👗", sells: "Clothing.", social: "TikTok · @prethicollections", socialUrl: "https://www.tiktok.com/@prethicollections" },
+      "43": { vendor: "Leenzy Fashion", category: "Footwear", group: "Fashion", icon: "👡", sells: "Handcrafted footwear.", social: "leenzymalaysia" },
+      "44": { vendor: "The Bayth", category: "Lifestyle", group: "Lifestyle", icon: "🏺", sells: "Artisan brass and bronze cookware and serveware, hand-block-printed textiles, loungewear and accessories.", social: "@thebayth" },
+      "45": { vendor: "Panipuri4life", category: "Food & Beverages", group: "Food", icon: "🥤", sells: "Mini puris and hot and cold bottled drinks.", social: "panipuri4life" },
+      "59": { vendor: "Sanjira Boutique Enterprise", category: "Clothing & Apparel", group: "Fashion", icon: "👗", sells: "Children’s kurtas, kurtis, sarees and short kurtis.", social: "@Sanjiraboutique" },
+      "60": { vendor: "Paajcavidhaa Essentials", category: "Pooja Essentials", group: "Spiritual & Wellness", icon: "🪔", sells: "Pooja products and stencil kolam.", social: "paajcavidhaa_essentials" },
+      "62": { vendor: "Balwirs Trendy Collections", category: "Clothing & Apparel", group: "Fashion", icon: "👗", sells: "Ready-to-wear Punjabi suits, kurtis, palazzos, trousers, dupattas, tops, plus-size clothing, earrings, bindis and clutch bags.", social: "Facebook page", socialUrl: "https://www.facebook.com/balwindhillon.dhillon" },
+      "66": { vendor: "Ethnique Enterprise", category: "Clothing & Apparel", group: "Fashion", icon: "👗", sells: "Men’s and children’s wear.", social: "Ethnique Malaysia" },
+      "67": { vendor: "Sai Ram Selection", category: "Clothing & Apparel", group: "Fashion", icon: "👗", sells: "Product details unavailable.", social: "Aatha corner" },
+      "68": { vendor: "Sai Ram Selection", category: "Clothing & Apparel", group: "Fashion", icon: "👗", sells: "Product details unavailable.", social: "Aatha corner" },
+      "75": { vendor: "The Misu Club KL", category: "Food & Beverages", group: "Food", icon: "🍰", sells: "Tiramisu in different flavours and matcha drinks.", social: "Instagram · themisuclubkl", socialUrl: "https://www.instagram.com/themisuclubkl" },
+      "76": { vendor: "NIRA VASTRA EMPIRE", category: "Clothing & Apparel", group: "Fashion", icon: "👗", sells: "Modern ethnic kurtis and kurta sets with traditional jewellery.", social: "Instagram · wearnira.my", socialUrl: "https://www.instagram.com/wearnira.my" },
+      "81": { vendor: "Nira Collections Hub", category: "Clothing & Apparel", group: "Fashion", icon: "👗", sells: "Indian traditional clothing, sarees and jewellery.", social: "Nira Collections Hub" },
+      "83": { vendor: "Thedivabakinglab", category: "Food & Beverages", group: "Food", icon: "🍰", sells: "Cakes and cookies.", social: "DivaCakes · @thedivabakinglab" },
+      "88": { vendor: "Tharunesh Designs", category: "Accessories", group: "Accessories", icon: "💎", sells: "Handmade jewellery and accessories.", social: "Tharunesh Designs" },
+      "92": { vendor: "Rudraksh Empire", category: "Spiritual Products and Wellness Products", group: "Spiritual & Wellness", icon: "📿", sells: "Rudraksh, karungali, spadikam and Ayurveda products.", social: "www.rudrakshempire.com", socialUrl: "https://www.rudrakshempire.com" }
     };
 
     let currentGender = "female";
@@ -1029,7 +1079,7 @@
     }
     function selectBooth(element) {
       const floor=element.dataset.floor;if(floor!==currentFloor)resetMapToFloorStart(floor,false);cancelRoute();
-      const sample=sampleBoothProfiles[element.dataset.booth];const target={booth:element.dataset.booth,floor,name:sample?sample.vendor:element.dataset.name||"Vendor to be confirmed",category:sample?sample.category:element.dataset.category||"Other",icon:sample?sample.icon:element.dataset.icon||"🏪"},route=routeToTarget(floor,target,element);
+      const profile=boothProfiles[element.dataset.booth];const target={booth:element.dataset.booth,floor,name:profile?profile.vendor:element.dataset.name||"Vendor to be confirmed",category:profile?profile.category:element.dataset.category||"Other",icon:profile?profile.icon:element.dataset.icon||"🏪"},route=routeToTarget(floor,target,element);
       mapSelectedBoothCode=target.booth;target.x=route.approach.point.x;target.y=route.approach.point.y;selectedRoute={target,points:route.points,approach:route.approach};renderRoute(floor,route.points);
       setRouteMessage(`Route to Booth ${target.booth}`,"Cyan line follows the open walkways and stops at the booth edge.");document.getElementById("route-action").disabled=false;document.getElementById("route-detail-action").disabled=false;
     }
@@ -1190,14 +1240,14 @@
     function getBoothDetails(code) {
       const booth = getBoothData().find(item => item.booth === String(code));
       if (!booth) return null;
-      const sample = sampleBoothProfiles[booth.booth];
+      const profile = boothProfiles[booth.booth];
       return {
         ...booth,
-        vendor: sample ? sample.vendor : "Vendor to be confirmed",
-        description: sample ? sample.description : "This booth is reserved in the festival map. The organiser will add the confirmed vendor profile, products and visitor information after final booth allocation.",
-        highlights: sample ? sample.highlights : ["Vendor TBC", "Products TBC", "Promotion TBC"],
-        promotion: sample ? sample.promotion : "No confirmed promotion yet. This placeholder will be replaced when the vendor information is available.",
-        opening: sample ? sample.opening : "To be confirmed"
+        vendor: profile ? profile.vendor : "Vendor to be confirmed",
+        sells: profile ? profile.sells : "Vendor information unavailable.",
+        social: profile && profile.social ? profile.social : "Not available",
+        socialUrl: profile && profile.socialUrl ? profile.socialUrl : "",
+        confirmed: Boolean(profile)
       };
     }
 
@@ -1221,12 +1271,22 @@
       document.getElementById("detail-floor-badge").textContent = item.floor === "ground" ? "Ground Floor" : "First Floor";
       document.getElementById("detail-icon").textContent = item.icon;
       document.getElementById("detail-booth-label").textContent = `Booth ${item.booth}`;
+      document.getElementById("detail-booth-number").textContent = item.booth;
       document.getElementById("detail-vendor-name").textContent = item.vendor;
       document.getElementById("detail-category").textContent = item.category;
-      document.getElementById("detail-opening").textContent = item.opening;
-      document.getElementById("detail-description").textContent = item.description;
-      document.getElementById("detail-promotion").textContent = item.promotion;
-      document.getElementById("detail-highlights").innerHTML = item.highlights.map(highlight => `<span class="detail-chip">${highlight}</span>`).join("");
+      document.getElementById("detail-sells").textContent = item.sells;
+      const social = document.getElementById("detail-social");
+      social.replaceChildren();
+      if (item.socialUrl) {
+        const link = document.createElement("a");
+        link.href = item.socialUrl;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        link.textContent = item.social;
+        social.appendChild(link);
+      } else {
+        social.textContent = item.social;
+      }
     }
 
     function closeBoothDetails() {
@@ -1242,22 +1302,25 @@
     /* @section: search-logic */
     function getBoothData() {
       return Array.from(document.querySelectorAll(".map-booth")).map(button => {
-        const sample = sampleBoothProfiles[button.dataset.booth];
+        const profile = boothProfiles[button.dataset.booth];
         return {
           booth: button.dataset.booth,
           floor: button.dataset.floor,
-          name: sample ? sample.vendor : button.dataset.name || "Vendor to be confirmed",
-          category: sample ? sample.category : button.dataset.category || "Other",
-          icon: sample ? sample.icon : button.dataset.icon || "🏪",
-          isSample: Boolean(sample)
+          name: profile ? profile.vendor : button.dataset.name || "Vendor to be confirmed",
+          category: profile ? profile.category : button.dataset.category || "Other",
+          group: profile ? profile.group : "Other",
+          sells: profile ? profile.sells : "",
+          social: profile ? profile.social : "",
+          icon: profile ? profile.icon : button.dataset.icon || "🏪",
+          confirmed: Boolean(profile)
         };
       });
     }
 
     function filterCategory(category, button) {
-      const categoryExists = getBoothData().some(booth => booth.category === category);
+      const categoryExists = getBoothData().some(booth => booth.group === category);
       if (category !== "All" && !categoryExists) {
-        showToast("Categories will be enabled after final vendor allocation.");
+        showToast("No allocated vendors are listed in this category yet.");
         return;
       }
       activeCategory = category;
@@ -1271,8 +1334,8 @@
       const query = input.value.trim().toLowerCase();
       const booths = getBoothData();
       const results = booths.filter(item => {
-        const matchesCategory = activeCategory === "All" || item.category === activeCategory;
-        const haystack = `${item.booth} ${item.name} ${item.category} ${item.floor}`.toLowerCase();
+        const matchesCategory = activeCategory === "All" || item.group === activeCategory;
+        const haystack = `${item.booth} ${item.name} ${item.category} ${item.group} ${item.sells} ${item.social} ${item.floor}`.toLowerCase();
         return matchesCategory && haystack.includes(query);
       });
       document.getElementById("results-title").textContent = query ? `Results for “${input.value.trim()}”` : activeCategory === "All" ? "All booths" : `${activeCategory} booths`;
@@ -1291,7 +1354,7 @@
         return `
           <article class="card search-result">
             <div class="result-icon">${item.icon}</div>
-            <div class="result-copy"><strong>${displayName}</strong><span>${item.category} · ${floorLabel}${item.isSample ? " · Sample" : ""}</span></div>
+            <div class="result-copy"><strong>${displayName}</strong><span>${item.category} · Booth ${item.booth} · ${floorLabel}</span></div>
             <div class="result-actions"><button class="result-detail" type="button" onclick="openBoothDetails('${item.booth}', 'screen-search')">Details</button><button class="result-go" type="button" onclick="goToBooth('${item.booth}')">Navigate ${item.booth}</button></div>
           </article>
         `;
