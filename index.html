@@ -283,6 +283,22 @@
     }
     .app-title { margin: 0; font-size: 34px; line-height: 1; font-weight: 1000; letter-spacing: .045em; }
     .app-tagline { margin: 7px 0 0; color: #F1D9E7; font-size: 12px; }
+    /* @section: beta-badge */
+.beta-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 12px;
+  padding: 6px 11px;
+  border: 1px solid rgba(255, 226, 125, .48);
+  border-radius: 999px;
+  color: #FFE27D;
+  background: rgba(255, 255, 255, .09);
+  box-shadow: 0 5px 14px rgba(43, 10, 43, .16);
+  font-size: 9px;
+  font-weight: 1000;
+  letter-spacing: .12em;
+}
     .welcome-body {
       flex: 1;
       min-height: 0;
@@ -610,7 +626,9 @@
         <span class="floating-spark spark-c">✦</span>
         <div class="hero-logo" aria-hidden="true">🪔</div>
         <h1 class="app-title">DEEPA GO</h1>
-        <p class="app-tagline">Your Festival Companion</p>
+<p class="app-tagline">Your Festival Companion</p>
+        
+<div class="beta-badge">✦ BETA VERSION</div>
       </div>
       <div class="welcome-body">
         <article class="card event-summary">
