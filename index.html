@@ -362,6 +362,26 @@
     }
     .quick-action span { font-size: 21px; }
     .quick-action b { font-size: 9px; }
+    .foodcourt-home-button {
+      width: 100%;
+      margin-bottom: 10px;
+      border: 1px solid rgba(255, 183, 70, .52);
+      border-radius: 18px;
+      padding: 12px 15px;
+      color: white;
+      background: linear-gradient(135deg, #E34A30, #F58B2D 58%, #D22E6A);
+      box-shadow: 0 10px 22px rgba(218, 68, 55, .22);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      cursor: pointer;
+    }
+    .foodcourt-home-copy { min-width: 0; text-align: left; }
+    .foodcourt-home-copy strong { display: block; font-size: 12px; }
+    .foodcourt-home-copy span { display: block; margin-top: 3px; color: #FFF2D8; font-size: 8px; }
+    .foodcourt-home-icon { flex: 0 0 auto; font-size: 27px; }
+    .foodcourt-home-arrow { flex: 0 0 auto; font-size: 17px; font-weight: 1000; }
 
     /* @section: map-screen */
     .map-toolbar { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:10px; }
@@ -579,6 +599,56 @@
     .programme-copy strong { display:block; color:#4C193E; font-size:9px; }
     .programme-copy span { display:block; margin-top:3px; color:var(--muted); font-size:7px; line-height:1.35; }
 
+    /* @section: foodcourt-screen */
+    .foodcourt-hero {
+      padding: 18px;
+      overflow: hidden;
+      position: relative;
+      color: white;
+      border: 0;
+      background: linear-gradient(135deg, #7A183F, #D83B3C 48%, #F08B2D);
+    }
+    .foodcourt-hero::after {
+      content: "";
+      width: 150px;
+      height: 150px;
+      position: absolute;
+      right: -78px;
+      top: -75px;
+      border: 24px solid rgba(255, 224, 135, .12);
+      border-radius: 50%;
+    }
+    .foodcourt-kicker { position: relative; z-index: 1; color: #FFE6A8; font-size: 8px; font-weight: 1000; letter-spacing: .1em; text-transform: uppercase; }
+    .foodcourt-hero h2 { position: relative; z-index: 1; margin: 7px 0 5px; font-size: 23px; line-height: 1.1; }
+    .foodcourt-hero p { position: relative; z-index: 1; margin: 0; max-width: 250px; color: #FFF0E1; font-size: 9px; line-height: 1.5; }
+    .foodcourt-meta { margin-top: 9px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+    .foodcourt-meta-card { padding: 11px; display: flex; align-items: center; gap: 9px; }
+    .foodcourt-meta-card span { font-size: 20px; }
+    .foodcourt-meta-card strong { display: block; color: #572143; font-size: 9px; }
+    .foodcourt-meta-card small { display: block; margin-top: 3px; color: var(--muted); font-size: 7px; line-height: 1.35; }
+    .foodcourt-map-card { margin-top: 10px; padding: 10px; }
+    .foodcourt-map-placeholder {
+      min-height: 410px;
+      border: 2px dashed #E9B778;
+      border-radius: 18px;
+      padding: 24px;
+      color: #794250;
+      background:
+        radial-gradient(circle at 15% 18%, rgba(255, 190, 73, .18), transparent 22%),
+        radial-gradient(circle at 84% 75%, rgba(225, 55, 105, .12), transparent 25%),
+        repeating-linear-gradient(45deg, rgba(255,255,255,.55) 0 12px, rgba(255,244,221,.55) 12px 24px),
+        #FFF7E8;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .foodcourt-map-placeholder .map-placeholder-icon { font-size: 44px; }
+    .foodcourt-map-placeholder strong { margin-top: 10px; font-size: 13px; }
+    .foodcourt-map-placeholder p { max-width: 235px; margin: 6px 0 0; color: #9A7181; font-size: 9px; line-height: 1.5; }
+    .foodcourt-map-note { margin: 9px 2px 0; color: var(--muted); font-size: 8px; line-height: 1.45; text-align: center; }
+
     /* @section: toast */
     .toast {
       position: fixed;
@@ -645,6 +715,11 @@
           <button class="quick-action" type="button" onclick="showScreen('screen-search')"><span>🔍</span><b>Find Booths</b></button>
           <button class="quick-action" type="button" onclick="showScreen('screen-avatar')"><span>🎨</span><b>My Avatar</b></button>
         </div>
+        <button class="foodcourt-home-button" type="button" onclick="showScreen('screen-foodcourt')" aria-label="Open Spice and Sizzle Foodcourt">
+          <span class="foodcourt-home-icon" aria-hidden="true">🌶️</span>
+          <span class="foodcourt-home-copy"><strong>Spice &amp; Sizzle Foodcourt</strong><span>Explore the outdoor food zone</span></span>
+          <span class="foodcourt-home-arrow" aria-hidden="true">›</span>
+        </button>
         <button class="primary-button" type="button" onclick="showScreen('screen-map')">Let’s Explore ✦</button>
       </div>
       <nav class="bottom-nav" aria-label="Primary navigation"></nav>
@@ -858,6 +933,38 @@
       <nav class="bottom-nav" aria-label="Primary navigation"></nav>
     </section>
 
+    <!-- @section: foodcourt-screen -->
+    <section id="screen-foodcourt" class="screen" aria-label="Spice and Sizzle Foodcourt">
+      <header class="app-header">
+        <button class="brand-button" type="button" onclick="showScreen('screen-welcome')"><span class="brand-mark">🪔</span>DEEPA GO</button>
+        <span class="header-label">Foodcourt</span>
+      </header>
+      <div class="screen-scroll">
+        <article class="card foodcourt-hero">
+          <span class="foodcourt-kicker">Outdoor Food Zone</span>
+          <h2>Spice &amp; Sizzle</h2>
+          <p>A cosy outdoor foodcourt for festive bites, drinks and delicious discoveries.</p>
+        </article>
+
+        <div class="foodcourt-meta">
+          <article class="card foodcourt-meta-card"><span aria-hidden="true">🍴</span><div><strong>Food &amp; Drinks</strong><small>Browse the outdoor stalls</small></div></article>
+          <article class="card foodcourt-meta-card"><span aria-hidden="true">🌙</span><div><strong>Open-Air Area</strong><small>Located outside the mall</small></div></article>
+        </div>
+
+        <article class="card foodcourt-map-card">
+          <div id="foodcourt-map-container" class="foodcourt-map-placeholder" role="img" aria-label="Reserved space for the Spice and Sizzle Foodcourt map">
+            <span class="map-placeholder-icon" aria-hidden="true">🗺️</span>
+            <strong>Foodcourt Map Coming Soon</strong>
+            <p>This space is ready for the official Spice &amp; Sizzle map image.</p>
+          </div>
+          <p class="foodcourt-map-note">The map will be fitted here in full without cropping.</p>
+        </article>
+
+        <button class="secondary-button" type="button" onclick="showScreen('screen-welcome')">← Back to Home</button>
+      </div>
+      <nav class="bottom-nav" aria-label="Primary navigation"></nav>
+    </section>
+
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
   </main>
 
@@ -927,7 +1034,7 @@
 
     /* @section: application-state */
     const SAVE_KEY = "gidfGoProgress";
-    const VALID_SCREENS = ["screen-welcome", "screen-map", "screen-search", "screen-booth-detail", "screen-avatar", "screen-visited", "screen-info"];
+    const VALID_SCREENS = ["screen-welcome", "screen-map", "screen-search", "screen-booth-detail", "screen-avatar", "screen-visited", "screen-info", "screen-foodcourt"];
 
     /* @section: booth-profiles — approved visitor-facing fields only */
     const boothProfiles = {
@@ -993,14 +1100,20 @@
 
     const discoveredSocials = {
       "3": { social: "Instagram · tsyara_yara", socialUrl: "https://www.instagram.com/tsyara_yara/" },
-      "4": { social: "Facebook · Laksharaa Boutique Malaysia", socialUrl: "https://www.facebook.com/laksharaaboutiquemalaysia/" },
+      "4": { social: "Instagram · lakshaaras", socialUrl: "https://www.instagram.com/lakshaaras/" },
       "5": { social: "Instagram · kays_collection_by_kay", socialUrl: "https://www.instagram.com/kays_collection_by_kay/" },
       "6": { social: "Instagram · luxyzcreations", socialUrl: "https://www.instagram.com/luxyzcreations/" },
       "7": { social: "Instagram · houseofvogueofficial", socialUrl: "https://www.instagram.com/houseofvogueofficial/" },
       "8": { social: "Instagram · houseofvogueofficial", socialUrl: "https://www.instagram.com/houseofvogueofficial/" },
+      "10": { social: "Instagram · summercollection_my", socialUrl: "https://www.instagram.com/summercollection_my/?hl=en" },
+      "11": { social: "Instagram · shaasvinivi__boutique", socialUrl: "https://www.instagram.com/shaasvinivi__boutique/?hl=en" },
+      "12": { social: "Instagram · anila_fashion_is_freedom", socialUrl: "https://www.instagram.com/anila_fashion_is_freedom/?hl=en" },
+      "13": { social: "Instagram · thisa_jewellery_collection", socialUrl: "https://www.instagram.com/thisa_jewellery_collection/" },
       "17": { social: "Instagram · chedi.kodi.plantshop", socialUrl: "https://www.instagram.com/chedi.kodi.plantshop/" },
       "18": { social: "Instagram · chedi.kodi.plantshop", socialUrl: "https://www.instagram.com/chedi.kodi.plantshop/" },
       "19": { social: "Instagram · 24k_golden_art", socialUrl: "https://www.instagram.com/24k_golden_art/" },
+      "27": { social: "Instagram · rascurrypickles", socialUrl: "https://www.instagram.com/rascurrypickles/" },
+      "29": { social: "Instagram · lokal.snacks", socialUrl: "https://www.instagram.com/lokal.snacks/" },
       "34": { social: "Instagram · thasselzcollection", socialUrl: "https://www.instagram.com/thasselzcollection/" },
       "55": { social: "Instagram · heshboutique", socialUrl: "https://www.instagram.com/heshboutique/" },
       "58": { social: "Instagram · viinazcollection", socialUrl: "https://www.instagram.com/viinazcollection/" },
@@ -1012,7 +1125,7 @@
       "80": { social: "Instagram · tasha_image_collection", socialUrl: "https://www.instagram.com/tasha_image_collection/" },
       "84": { social: "Instagram · vanzboutique2024", socialUrl: "https://www.instagram.com/vanzboutique2024/" }
     };
-    const clearedSocials = new Set(["1"]);
+    const clearedSocials = new Set(["1", "31", "35"]);
 
     const originalBoothProfiles = Object.fromEntries(
       Object.entries(boothProfiles).map(([booth, profile]) => [booth, { ...profile }])
