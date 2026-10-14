@@ -550,7 +550,7 @@
       background: linear-gradient(145deg, #461040, #A11F60 58%, #F06D3F);
       box-shadow: 0 16px 32px rgba(72,18,61,.18);
     }
-    .poster-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .poster-media img { width: 100%; height: 100%; object-fit: contain; display: block; background: #FFF0D2; }
     .poster-fallback { position: absolute; inset: 0; display: none; align-items: center; justify-content: center; flex-direction: column; text-align: center; }
     .poster-media.missing .poster-fallback { display: flex; }
     .poster-media.missing img { display: none; }
@@ -820,37 +820,36 @@
         <article class="card info-detail"><div class="info-icon">🕙</div><div><strong>Opening hours</strong><span>10AM - 10PM</span></div></article>
         <article class="card organiser-card"><strong>Organised by</strong><span>ASC Agenda Suria Communication Sdn Bhd</span></article>
 
-        <!-- @section: sample-stage-programme -->
-        <div class="programme-heading"><h2>Stage Programme</h2><span>3-day sample schedule</span></div>
-        <div class="programme-notice"><strong>Example schedule only.</strong> These programme names and times are temporary planning samples, not the confirmed official event programme. The organiser will update this section when the final schedule is ready.</div>
+        <!-- @section: stage-programme -->
+        <div class="programme-heading"><h2>Stage Programme</h2><span>Official schedule</span></div>
 
         <article class="card programme-day">
-          <div class="programme-day-header"><strong>Friday, 16 October 2026</strong><span>Sample · Day 1</span></div>
+          <div class="programme-day-header"><strong>Friday, 16 October 2026</strong><span>Day 1</span></div>
           <div class="programme-list">
-            <div class="programme-row"><div class="programme-time">11:00 AM</div><div class="programme-copy"><strong>Festival Welcome & Lamp Lighting</strong><span>Sample opening ceremony segment</span></div></div>
-            <div class="programme-row"><div class="programme-time">2:00 PM</div><div class="programme-copy"><strong>Indian Fashion Showcase</strong><span>Example festive fashion presentation</span></div></div>
-            <div class="programme-row"><div class="programme-time">5:30 PM</div><div class="programme-copy"><strong>Classical & Folk Dance Showcase</strong><span>Sample cultural performance block</span></div></div>
-            <div class="programme-row"><div class="programme-time">8:00 PM</div><div class="programme-copy"><strong>Festival Music Night</strong><span>Example evening entertainment</span></div></div>
+            <div class="programme-row"><div class="programme-time">6:00–7:00 PM</div><div class="programme-copy"><strong>Classical Dance</strong><span>By Nartaki Fine Arts</span></div></div>
           </div>
         </article>
 
         <article class="card programme-day">
-          <div class="programme-day-header"><strong>Saturday, 17 October 2026</strong><span>Sample · Day 2</span></div>
+          <div class="programme-day-header"><strong>Saturday, 17 October 2026</strong><span>Day 2</span></div>
           <div class="programme-list">
-            <div class="programme-row"><div class="programme-time">11:30 AM</div><div class="programme-copy"><strong>Kids Colouring Activity</strong><span>Example family activity on stage</span></div></div>
-            <div class="programme-row"><div class="programme-time">2:30 PM</div><div class="programme-copy"><strong>Festive Cooking Demonstration</strong><span>Sample food and culture session</span></div></div>
-            <div class="programme-row"><div class="programme-time">5:00 PM</div><div class="programme-copy"><strong>Bollywood Dance Showcase</strong><span>Example dance performance</span></div></div>
-            <div class="programme-row"><div class="programme-time">8:00 PM</div><div class="programme-copy"><strong>Deepavali Celebration Concert</strong><span>Sample headline evening programme</span></div></div>
+            <div class="programme-row"><div class="programme-time">12:00–2:00 PM</div><div class="programme-copy"><strong>3D Peacock Painting</strong><span>By The Creation House Craft · Kids Edition</span></div></div>
+            <div class="programme-row"><div class="programme-time">2:00–3:00 PM</div><div class="programme-copy"><strong>Vinyl Isai Payanam</strong><span>Beat Bazaar</span></div></div>
+            <div class="programme-row"><div class="programme-time">3:00–4:00 PM</div><div class="programme-copy"><strong>Semi Classical Dance</strong><span>By DMPAA Academy</span></div></div>
+            <div class="programme-row"><div class="programme-time">4:00–5:00 PM</div><div class="programme-copy"><strong>Dhol Performance</strong><span>By Rsquare</span></div></div>
+            <div class="programme-row"><div class="programme-time">5:00–6:00 PM</div><div class="programme-copy"><strong>Official Launching Ceremony of the Deepavali Fest 2026</strong><span>Guest of Honour: YB Dr. Gunaraj George, Member of the Selangor State Legislative Assembly (ADUN) for Sentosa</span></div></div>
+            <div class="programme-row"><div class="programme-time">6:30–7:30 PM</div><div class="programme-copy"><strong>Dr. Y &amp; Dr. S Wellness</strong><span>By Dr. Shalini Ramachandran</span></div></div>
           </div>
         </article>
 
         <article class="card programme-day">
-          <div class="programme-day-header"><strong>Sunday, 18 October 2026</strong><span>Sample · Day 3</span></div>
+          <div class="programme-day-header"><strong>Sunday, 18 October 2026</strong><span>Day 3</span></div>
           <div class="programme-list">
-            <div class="programme-row"><div class="programme-time">11:00 AM</div><div class="programme-copy"><strong>Family Games & Quiz</strong><span>Example audience participation activity</span></div></div>
-            <div class="programme-row"><div class="programme-time">2:00 PM</div><div class="programme-copy"><strong>Traditional Attire Parade</strong><span>Sample community showcase</span></div></div>
-            <div class="programme-row"><div class="programme-time">5:30 PM</div><div class="programme-copy"><strong>Cultural Performance Finale</strong><span>Example closing performance block</span></div></div>
-            <div class="programme-row"><div class="programme-time">8:00 PM</div><div class="programme-copy"><strong>Closing Appreciation</strong><span>Sample organiser thank-you and farewell</span></div></div>
+            <div class="programme-row"><div class="programme-time">12:00–2:00 PM</div><div class="programme-copy"><strong>3D Peacock Painting</strong><span>By The Creation House Craft · Kids Edition</span></div></div>
+            <div class="programme-row"><div class="programme-time">2:00–3:00 PM</div><div class="programme-copy"><strong>Vinyl Isai Payanam</strong><span>Beat Bazaar</span></div></div>
+            <div class="programme-row"><div class="programme-time">3:30–4:00 PM</div><div class="programme-copy"><strong>Laddu Eating Challenge</strong><span>Festival activity</span></div></div>
+            <div class="programme-row"><div class="programme-time">4:00–5:00 PM</div><div class="programme-copy"><strong>Semi Classical Dance</strong><span>By DMPAA Academy</span></div></div>
+            <div class="programme-row"><div class="programme-time">5:00–6:00 PM</div><div class="programme-copy"><strong>Dhol Performance</strong><span>By Rsquare</span></div></div>
           </div>
         </article>
 
@@ -987,6 +986,60 @@
       "92": { vendor: "Rudraksh Empire", category: "Spiritual and Wellness", group: "Spiritual and wellness products including Rudraksh beads, Ayurveda essentials, and more.", icon: "📿", sells: "Rudraksh, karungali, spadikam and Ayurveda products.", social: "www.rudrakshempire.com", socialUrl: "https://www.rudrakshempire.com" }
     };
 
+    /* @section: booth-assignments — latest vendor names supplied by the organiser */
+    const boothAssignments = {
+      "1": "GOLDEN EAGLE & GRANDBEE", "2": "ANICHAM", "3": "TSYARA ENTERPRISE", "4": "LAKSHARAAS", "5": "KAYS COLLECTION", "6": "LUXYZ CREATIONS", "7": "HOUSE OF VOGUE", "8": "HOUSE OF VOGUE", "9": "PETITE POSH VENTURES", "10": "SUMMER COLLECTION", "11": "SHAASVINIVI BOUTIQUE", "12": "ANILA FASHION", "13": "THISA TRADING", "14": "ROOTS OF BENGAL", "15": "AALAM ART", "16": "AALAM ART", "17": "CHEDI KODI PLANTSHOP", "18": "CHEDI KODI PLANTSHOP", "19": "24K GOLDEN ART", "20": "NILA SILKS & COTTON", "21": "RISHI HANDICRAFT", "22": "RISHI HANDICRAFT", "23": "JEANNYS GARDEN", "24": "GRACE AND GLAMOUR", "25": "TRIBAL ASIA SKINCARE", "26": "MAKE IT SWEET", "27": "RAS PICKLES", "28": "MITZ FASHION", "29": "LOKAL SNACKS", "30": "SITHARA ENTERPRISE", "31": "LIBAAS", "32": "BODHI SERIES", "33": "TULASIRAM", "34": "THASSELZ COLLECTION", "35": "GR COLLECTIONS", "36": "BINDHU SPICES", "37": "SPICYJAR", "38": "AMODINI FASHION HOUSE", "39": "KAIRAVT", "40": "SASHA DESIGN", "41": "HERBS & HOME", "42": "PRETHI COLLECTION", "43": "LEENZY FASHION", "44": "THE BAYTH", "55": "HESH BOUTIQUE", "56": "BEAUTIFULME ATELIER", "57": "NIRMALYA", "58": "VIINAZ COLLECTION", "59": "SANJIRA BOUTIQUE", "60": "PAAJCHAVIDAA ESSENTIAL", "61": "DEVZ THREAD COLLECTION", "62": "BALWIRS TRENDY", "64": "SANSKRITI SUTRA & PURE DIVINE", "65": "THAZNESHA BOUTIQUE", "66": "ETHNIQUE ENTERPRISE", "67": "BK BOUTIQUE", "68": "VENMEGHAM AADAI JEWELS", "70": "KURASA FOOD", "71": "TRISH SK", "72": "ANJALI DESIGN COLLECTION", "73": "MAYURA SILK AND FABRIC", "74": "PLEATS AND PINS CHELLAYI", "75": "THE MISU CLUB KL", "76": "NIRA VASTRA EMPIRE", "77": "DRAPES BY DHEE", "79": "TASHA IMAGE", "80": "TASHA IMAGE", "81": "NIRA COLLECTION HUB", "82": "CINNAMON SUGAR", "83": "THE DIVA BAKING LAB", "84": "VANZ BOUTIQUE", "85": "VIKARAA & SPICE BLOOM", "88": "THARUNESH DESIGN", "90": "SAI AADAI AABHARANAM", "92": "RUDRAKSH EMPIRE"
+    };
+
+    const discoveredSocials = {
+      "3": { social: "Instagram · tsyara_yara", socialUrl: "https://www.instagram.com/tsyara_yara/" },
+      "4": { social: "Facebook · Laksharaa Boutique Malaysia", socialUrl: "https://www.facebook.com/laksharaaboutiquemalaysia/" },
+      "5": { social: "Instagram · kays_collection_by_kay", socialUrl: "https://www.instagram.com/kays_collection_by_kay/" },
+      "6": { social: "Instagram · luxyzcreations", socialUrl: "https://www.instagram.com/luxyzcreations/" },
+      "7": { social: "Instagram · houseofvogueofficial", socialUrl: "https://www.instagram.com/houseofvogueofficial/" },
+      "8": { social: "Instagram · houseofvogueofficial", socialUrl: "https://www.instagram.com/houseofvogueofficial/" },
+      "17": { social: "Instagram · chedi.kodi.plantshop", socialUrl: "https://www.instagram.com/chedi.kodi.plantshop/" },
+      "18": { social: "Instagram · chedi.kodi.plantshop", socialUrl: "https://www.instagram.com/chedi.kodi.plantshop/" },
+      "19": { social: "Instagram · 24k_golden_art", socialUrl: "https://www.instagram.com/24k_golden_art/" },
+      "34": { social: "Instagram · thasselzcollection", socialUrl: "https://www.instagram.com/thasselzcollection/" },
+      "55": { social: "Instagram · heshboutique", socialUrl: "https://www.instagram.com/heshboutique/" },
+      "58": { social: "Instagram · viinazcollection", socialUrl: "https://www.instagram.com/viinazcollection/" },
+      "65": { social: "Instagram · thaznesha_boutique", socialUrl: "https://www.instagram.com/thaznesha_boutique/" },
+      "71": { social: "Instagram · trishsk.sareesjewels", socialUrl: "https://www.instagram.com/trishsk.sareesjewels/" },
+      "72": { social: "Instagram · anjali_fashion_design", socialUrl: "https://www.instagram.com/anjali_fashion_design/" },
+      "77": { social: "Instagram · drapesbydhee", socialUrl: "https://www.instagram.com/drapesbydhee/" },
+      "79": { social: "Instagram · tasha_image_collection", socialUrl: "https://www.instagram.com/tasha_image_collection/" },
+      "80": { social: "Instagram · tasha_image_collection", socialUrl: "https://www.instagram.com/tasha_image_collection/" },
+      "84": { social: "Instagram · vanzboutique2024", socialUrl: "https://www.instagram.com/vanzboutique2024/" }
+    };
+    const clearedSocials = new Set(["1"]);
+
+    const originalBoothProfiles = Object.fromEntries(
+      Object.entries(boothProfiles).map(([booth, profile]) => [booth, { ...profile }])
+    );
+    Object.entries(boothAssignments).forEach(([booth, vendor]) => {
+      if (boothProfiles[booth]) {
+        const previousVendor = originalBoothProfiles[booth].vendor || "";
+        const normalizeVendor = value => value.toLowerCase().replace(/[^a-z0-9]/g, "");
+        boothProfiles[booth].vendor = vendor;
+        if (normalizeVendor(previousVendor) !== normalizeVendor(vendor)) {
+          boothProfiles[booth].social = "Not available";
+          boothProfiles[booth].socialUrl = "";
+        }
+      } else {
+        boothProfiles[booth] = { vendor, category: "Vendor", group: "Other", icon: "🏪", sells: "Vendor details to be confirmed.", social: "Not available", socialUrl: "" };
+      }
+    });
+    Object.entries(discoveredSocials).forEach(([booth, social]) => {
+      if (boothProfiles[booth]) Object.assign(boothProfiles[booth], social);
+    });
+    clearedSocials.forEach(booth => {
+      if (boothProfiles[booth] && !discoveredSocials[booth]) {
+        boothProfiles[booth].social = "Not available";
+        boothProfiles[booth].socialUrl = "";
+      }
+    });
+
     let currentGender = "female";
     let selectedHair = 0;
     let selectedOutfit = 0;
@@ -1036,7 +1089,16 @@
       });
       const scroller = nextScreen.querySelector(".screen-scroll, .welcome-body");
       if (scroller) scroller.scrollTop = 0;
-      if (id === "screen-map" && !preserveMapRoute) resetMapToFloorStart(currentFloor, false);
+      if (id === "screen-map") {
+        document.querySelectorAll(".map-floor").forEach(map => map.classList.toggle("active", map.id === `floor-${currentFloor}`));
+        document.querySelectorAll(".floor-tab").forEach(tab => tab.classList.toggle("active", tab.dataset.floor === currentFloor));
+        if (!preserveMapRoute) {
+          cancelRoute();
+          const location = mapPosition.booth ? `Currently at Booth ${mapPosition.booth}` : `Starting at ${mapPosition.name || floorStarts[currentFloor].name}`;
+          setRouteMessage(location, "Your saved location is ready. Tap a numbered booth to preview a walkway-safe route.");
+        }
+        requestAnimationFrame(updateMarkerPosition);
+      }
       if (id === "screen-search") runSearch();
       if (id === "screen-visited") renderVisitedBooths();
       if (id === "screen-booth-detail" && selectedDetailBooth) renderBoothDetails();
@@ -1476,8 +1538,25 @@
       currentFloor = progress.floor === "first" ? "first" : "ground";
       currentScreen = VALID_SCREENS.includes(progress.screen) ? progress.screen : "screen-welcome";
       if (progress.screen === "screen-home") currentScreen = "screen-welcome";
-      /* Location is intentionally not restored: every Map entry begins at the selected floor anchor. */
-      mapPosition = cloneFloorStart(currentFloor);
+      const savedPosition = progress.mapPosition;
+      const positionFloor = savedPosition && savedPosition.floor === "first" ? "first" : "ground";
+      const dimensions = mapDimensions[positionFloor];
+      const floorGraph = navigationGraphs[positionFloor];
+      const hasValidPosition = savedPosition
+        && positionFloor === currentFloor
+        && Number.isFinite(savedPosition.x)
+        && Number.isFinite(savedPosition.y)
+        && savedPosition.x >= 0
+        && savedPosition.x <= dimensions.w
+        && savedPosition.y >= 0
+        && savedPosition.y <= dimensions.h
+        && typeof savedPosition.routeNode === "string"
+        && Object.prototype.hasOwnProperty.call(floorGraph.nodes, savedPosition.routeNode)
+        && (savedPosition.booth == null || Array.from(document.querySelectorAll(".map-booth")).some(booth => booth.dataset.booth === String(savedPosition.booth) && booth.dataset.floor === positionFloor))
+        && (savedPosition.egress == null || (Array.isArray(savedPosition.egress) && savedPosition.egress.every(point => point && Number.isFinite(point.x) && Number.isFinite(point.y) && point.x >= 0 && point.x <= dimensions.w && point.y >= 0 && point.y <= dimensions.h)));
+      mapPosition = hasValidPosition
+        ? { ...savedPosition, floor: positionFloor, booth: savedPosition.booth == null ? null : String(savedPosition.booth), egress: Array.isArray(savedPosition.egress) ? savedPosition.egress : [] }
+        : cloneFloorStart(currentFloor);
       visitedBooths = Array.isArray(progress.visitedBooths) ? progress.visitedBooths : [];
       activeCategory = typeof progress.activeCategory === "string" ? progress.activeCategory : "All";
     }
