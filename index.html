@@ -647,7 +647,121 @@
     .foodcourt-map-placeholder .map-placeholder-icon { font-size: 44px; }
     .foodcourt-map-placeholder strong { margin-top: 10px; font-size: 13px; }
     .foodcourt-map-placeholder p { max-width: 235px; margin: 6px 0 0; color: #9A7181; font-size: 9px; line-height: 1.5; }
+    .foodcourt-map-stage {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid #E9D2C2;
+      border-radius: 16px;
+      background: #FFF8ED;
+      line-height: 0;
+    }
+    .foodcourt-map-image {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .foodcourt-avatar-marker {
+      position: absolute;
+      z-index: 5;
+      left: 50%;
+      top: 95%;
+      width: 36px;
+      height: 52px;
+      transform: translate(-50%, -80%);
+      transition: left .9s cubic-bezier(.2,.75,.25,1), top .9s cubic-bezier(.2,.75,.25,1);
+      pointer-events: none;
+      filter: drop-shadow(0 2px 3px rgba(42, 20, 36, .45));
+    }
+    .foodcourt-avatar-pin {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      font-size: 27px;
+    }
+    .foodcourt-avatar-stack { display: none; position: absolute; inset: 0; }
+    .foodcourt-avatar-marker.saved .foodcourt-avatar-pin { display: none; }
+    .foodcourt-avatar-marker.saved .foodcourt-avatar-stack { display: block; }
+    .foodcourt-avatar-layer {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 36px;
+      height: 52px;
+      object-fit: contain;
+      image-rendering: pixelated;
+      pointer-events: none;
+    }
+    .foodcourt-avatar-marker.is-walking { filter: drop-shadow(0 2px 4px rgba(0, 213, 255, .75)); }
+    .foodcourt-map-stage.is-walking .foodcourt-hotspot { pointer-events: none; }
+    .foodcourt-map-stage.is-walking .foodcourt-avatar-marker { z-index: 8; }
+    .foodcourt-hotspot {
+      position: absolute;
+      width: 11%;
+      height: 5.3%;
+      padding: 0;
+      transform: translate(-50%, -50%);
+      border: 2px solid transparent;
+      border-radius: 999px;
+      background: transparent;
+      cursor: pointer;
+      z-index: 2;
+    }
+    .foodcourt-hotspot:hover,
+    .foodcourt-hotspot:focus-visible {
+      border-color: rgba(0, 213, 255, .95);
+      background: rgba(0, 213, 255, .16);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(0, 213, 255, .2);
+    }
     .foodcourt-map-note { margin: 9px 2px 0; color: var(--muted); font-size: 8px; line-height: 1.45; text-align: center; }
+    .foodcourt-directory-card { margin-top: 10px; padding: 12px; }
+    .foodcourt-directory-heading { display: flex; align-items: center; gap: 9px; }
+    .foodcourt-directory-heading span { font-size: 22px; }
+    .foodcourt-directory-heading strong { color: #572143; font-size: 12px; }
+    .foodcourt-directory-card p { margin: 7px 0 10px; color: var(--muted); font-size: 8px; line-height: 1.45; }
+    .foodcourt-directory-image {
+      width: 100%;
+      height: auto;
+      display: block;
+      border: 1px solid #E9D2C2;
+      border-radius: 14px;
+      background: #FFF;
+    }
+    .foodcourt-modal {
+      position: absolute;
+      z-index: 90;
+      inset: 0;
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 16px;
+      background: rgba(43, 10, 43, .48);
+    }
+    .foodcourt-modal.open { display: flex; }
+    .foodcourt-modal-card {
+      width: 100%;
+      padding: 16px;
+      border: 1px solid #F0C5B3;
+      border-radius: 22px;
+      background: white;
+      box-shadow: 0 20px 45px rgba(43, 10, 43, .28);
+    }
+    .foodcourt-modal-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+    .foodcourt-modal-kicker { color: #C12F61; font-size: 8px; font-weight: 1000; letter-spacing: .08em; text-transform: uppercase; }
+    .foodcourt-modal-card h3 { margin: 5px 0 0; color: #4B173E; font-size: 19px; }
+    .foodcourt-modal-close {
+      width: 30px;
+      height: 30px;
+      border: 0;
+      border-radius: 50%;
+      color: #8A526B;
+      background: #FFF0F4;
+      font-size: 18px;
+      cursor: pointer;
+    }
+    .foodcourt-modal-copy { margin: 11px 0 0; color: var(--muted); font-size: 9px; line-height: 1.55; }
+    .foodcourt-modal-meta { margin-top: 11px; padding: 10px 11px; border: 1px solid #F2D7A8; border-radius: 14px; color: #75475B; background: #FFF6DE; font-size: 8px; line-height: 1.45; }
 
     /* @section: toast */
     .toast {
@@ -952,18 +1066,55 @@
         </div>
 
         <article class="card foodcourt-map-card">
-          <div id="foodcourt-map-container" class="foodcourt-map-placeholder" role="img" aria-label="Reserved space for the Spice and Sizzle Foodcourt map">
-            <span class="map-placeholder-icon" aria-hidden="true">🗺️</span>
-            <strong>Foodcourt Map Coming Soon</strong>
-            <p>This space is ready for the official Spice &amp; Sizzle map image.</p>
+          <div id="foodcourt-map-container" class="foodcourt-map-stage" aria-label="Interactive Spice and Sizzle foodcourt map">
+            <img class="foodcourt-map-image" src="./images/spice-sizzle-map.jpg" alt="Spice and Sizzle Indian Food Bazaar map">
+            <div id="foodcourt-avatar-marker" class="foodcourt-avatar-marker" aria-hidden="true">
+              <div class="foodcourt-avatar-pin">📍</div>
+              <div class="foodcourt-avatar-stack">
+                <img id="foodcourt-avatar-base" class="foodcourt-avatar-layer avatar-base" alt="">
+                <img id="foodcourt-avatar-hair" class="foodcourt-avatar-layer avatar-hair" alt="">
+                <img id="foodcourt-avatar-outfit" class="foodcourt-avatar-layer avatar-outfit" alt="">
+              </div>
+            </div>
+            <button class="foodcourt-hotspot" style="left:10.8%;top:7.0%" type="button" onclick="travelToFoodcourtStall('16', this)" aria-label="Walk to Stall 16 and view information"></button>
+            <button class="foodcourt-hotspot" style="left:74.4%;top:7.2%" type="button" onclick="travelToFoodcourtStall('8', this)" aria-label="Walk to Stall 8 and view information"></button>
+            <button class="foodcourt-hotspot" style="left:10.8%;top:21.2%" type="button" onclick="travelToFoodcourtStall('23', this)" aria-label="Walk to Stall 23 and view information"></button>
+            <button class="foodcourt-hotspot" style="left:74.4%;top:21.5%" type="button" onclick="travelToFoodcourtStall('7', this)" aria-label="Walk to Stall 7 and view information"></button>
+            <button class="foodcourt-hotspot" style="left:10.8%;top:35.2%" type="button" onclick="travelToFoodcourtStall('24', this)" aria-label="Walk to Stall 24 and view information"></button>
+            <button class="foodcourt-hotspot" style="left:74.4%;top:35.4%" type="button" onclick="travelToFoodcourtStall('6', this)" aria-label="Walk to Stall 6 and view information"></button>
+            <button class="foodcourt-hotspot" style="left:10.8%;top:49.2%" type="button" onclick="travelToFoodcourtStall('25', this)" aria-label="Walk to Stall 25 and view information"></button>
+            <button class="foodcourt-hotspot" style="left:74.4%;top:49.3%" type="button" onclick="travelToFoodcourtStall('5', this)" aria-label="Walk to Stall 5 and view information"></button>
+            <button class="foodcourt-hotspot" style="left:10.8%;top:63.0%" type="button" onclick="travelToFoodcourtStall('26', this)" aria-label="Walk to Stall 26 and view information"></button>
+            <button class="foodcourt-hotspot" style="left:74.4%;top:63.3%" type="button" onclick="travelToFoodcourtStall('4', this)" aria-label="Walk to Stall 4 and view information"></button>
+            <button class="foodcourt-hotspot" style="left:10.8%;top:76.8%" type="button" onclick="travelToFoodcourtStall('27', this)" aria-label="Walk to Stall 27 and view information"></button>
+            <button class="foodcourt-hotspot" style="left:74.4%;top:77.0%" type="button" onclick="travelToFoodcourtStall('3', this)" aria-label="Walk to Stall 3 and view information"></button>
+            <button class="foodcourt-hotspot" style="left:10.8%;top:91.0%" type="button" onclick="travelToFoodcourtStall('28', this)" aria-label="Walk to Stall 28 and view information"></button>
+            <button class="foodcourt-hotspot" style="left:74.4%;top:90.9%" type="button" onclick="travelToFoodcourtStall('1', this)" aria-label="Walk to Stall 1 and view information"></button>
           </div>
-          <p class="foodcourt-map-note">The map will be fitted here in full without cropping.</p>
+          <p class="foodcourt-map-note">Tap a blue marker: your avatar walks to the stall, then its details open.</p>
+        </article>
+
+        <article class="card foodcourt-directory-card">
+          <div class="foodcourt-directory-heading"><span aria-hidden="true">📍</span><strong>Find the Foodcourt</strong></div>
+          <p>Use this directory map to locate Spice &amp; Sizzle beside the main entrance at Strand Mall.</p>
+          <img class="foodcourt-directory-image" src="./images/spice-sizzle-directory.jpg" alt="Strand Mall directory map showing the Spice and Sizzle foodcourt location">
         </article>
 
         <button class="secondary-button" type="button" onclick="showScreen('screen-welcome')">← Back to Home</button>
       </div>
       <nav class="bottom-nav" aria-label="Primary navigation"></nav>
     </section>
+
+    <div id="foodcourt-info-modal" class="foodcourt-modal" role="dialog" aria-modal="true" aria-labelledby="foodcourt-info-title" onclick="if(event.target===this)closeFoodcourtInfo()">
+      <article class="foodcourt-modal-card">
+        <div class="foodcourt-modal-top">
+          <div><div class="foodcourt-modal-kicker">Spice &amp; Sizzle</div><h3 id="foodcourt-info-title">Stall information</h3></div>
+          <button class="foodcourt-modal-close" type="button" onclick="closeFoodcourtInfo()" aria-label="Close stall information">×</button>
+        </div>
+        <p id="foodcourt-info-copy" class="foodcourt-modal-copy"></p>
+        <div id="foodcourt-info-meta" class="foodcourt-modal-meta"></div>
+      </article>
+    </div>
 
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
   </main>
@@ -1035,6 +1186,22 @@
     /* @section: application-state */
     const SAVE_KEY = "gidfGoProgress";
     const VALID_SCREENS = ["screen-welcome", "screen-map", "screen-search", "screen-booth-detail", "screen-avatar", "screen-visited", "screen-info", "screen-foodcourt"];
+    const foodcourtStalls = {
+      "1": { name: "Stall 1", description: "Food stall information will be added here once the Spice & Sizzle vendor directory is confirmed.", note: "Right side · Entrance end" },
+      "3": { name: "Stall 3", description: "Food stall information will be added here once the Spice & Sizzle vendor directory is confirmed.", note: "Right side · Lower row" },
+      "4": { name: "Stall 4", description: "Food stall information will be added here once the Spice & Sizzle vendor directory is confirmed.", note: "Right side · Lower row" },
+      "5": { name: "Stall 5", description: "Food stall information will be added here once the Spice & Sizzle vendor directory is confirmed.", note: "Right side · Middle row" },
+      "6": { name: "Stall 6", description: "Food stall information will be added here once the Spice & Sizzle vendor directory is confirmed.", note: "Right side · Middle row" },
+      "7": { name: "Stall 7", description: "Food stall information will be added here once the Spice & Sizzle vendor directory is confirmed.", note: "Right side · Upper row" },
+      "8": { name: "Stall 8", description: "Food stall information will be added here once the Spice & Sizzle vendor directory is confirmed.", note: "Right side · Upper row" },
+      "16": { name: "Stall 16", description: "Food stall information will be added here once the Spice & Sizzle vendor directory is confirmed.", note: "Left side · Upper row" },
+      "23": { name: "Stall 23", description: "Food stall information will be added here once the Spice & Sizzle vendor directory is confirmed.", note: "Left side · Upper row" },
+      "24": { name: "Stall 24", description: "Food stall information will be added here once the Spice & Sizzle vendor directory is confirmed.", note: "Left side · Middle row" },
+      "25": { name: "Stall 25", description: "Food stall information will be added here once the Spice & Sizzle vendor directory is confirmed.", note: "Left side · Middle row" },
+      "26": { name: "Stall 26", description: "Food stall information will be added here once the Spice & Sizzle vendor directory is confirmed.", note: "Left side · Lower row" },
+      "27": { name: "Stall 27", description: "Food stall information will be added here once the Spice & Sizzle vendor directory is confirmed.", note: "Left side · Lower row" },
+      "28": { name: "Stall 28", description: "Food stall information will be added here once the Spice & Sizzle vendor directory is confirmed.", note: "Left side · Entrance end" }
+    };
 
     /* @section: booth-profiles — approved visitor-facing fields only */
     const boothProfiles = {
@@ -1161,6 +1328,8 @@
     let currentFloor = "ground";
     let currentScreen = "screen-welcome";
     let mapPosition = { floor: "ground", x: 432, y: 815, booth: null, name: "Entrance Arch", routeNode: "g_start", egress: [] };
+    let foodcourtPosition = { stall: null, left: "50%", top: "95%" };
+    let foodcourtWalkAnimation = null;
     let visitedBooths = [];
     let activeCategory = "All";
     let selectedDetailBooth = null;
@@ -1212,10 +1381,74 @@
         }
         requestAnimationFrame(updateMarkerPosition);
       }
+      if (id === "screen-foodcourt") requestAnimationFrame(updateFoodcourtAvatarMarker);
       if (id === "screen-search") runSearch();
       if (id === "screen-visited") renderVisitedBooths();
       if (id === "screen-booth-detail" && selectedDetailBooth) renderBoothDetails();
       if (shouldSave && appReady) saveProgress();
+    }
+
+    function openFoodcourtInfo(stallNumber) {
+      const stall = foodcourtStalls[String(stallNumber)] || {
+        name: `Stall ${stallNumber}`,
+        description: "Food stall information will be added here once the Spice & Sizzle vendor directory is confirmed.",
+        note: "Spice & Sizzle Foodcourt"
+      };
+      document.getElementById("foodcourt-info-title").textContent = stall.name;
+      document.getElementById("foodcourt-info-copy").textContent = stall.description;
+      document.getElementById("foodcourt-info-meta").textContent = stall.note;
+      document.getElementById("foodcourt-info-modal").classList.add("open");
+    }
+
+    function updateFoodcourtAvatarMarker() {
+      const marker = document.getElementById("foodcourt-avatar-marker");
+      if (!marker) return;
+      marker.style.left = foodcourtPosition.left || "50%";
+      marker.style.top = foodcourtPosition.top || "95%";
+      marker.classList.toggle("saved", avatarSaved);
+      marker.style.display = "block";
+    }
+
+    function travelToFoodcourtStall(stallNumber, hotspot) {
+      const marker = document.getElementById("foodcourt-avatar-marker");
+      const map = document.getElementById("foodcourt-map-container");
+      if (!marker || !map || !hotspot || foodcourtWalkAnimation) return;
+
+      closeFoodcourtInfo();
+      updateFoodcourtAvatarMarker();
+      const startLeft = foodcourtPosition.left || "50%";
+      const startTop = foodcourtPosition.top || "95%";
+      const targetLeft = hotspot.style.left;
+      const targetTop = hotspot.style.top;
+      marker.classList.add("is-walking");
+      map.classList.add("is-walking");
+
+      foodcourtWalkAnimation = marker.animate([
+        { left: startLeft, top: startTop, offset: 0 },
+        { left: "50%", top: targetTop, offset: 0.72 },
+        { left: targetLeft, top: targetTop, offset: 1 }
+      ], {
+        duration: 1450,
+        easing: "cubic-bezier(.2,.75,.25,1)",
+        fill: "forwards"
+      });
+
+      foodcourtWalkAnimation.onfinish = () => {
+        marker.style.left = targetLeft;
+        marker.style.top = targetTop;
+        marker.classList.remove("is-walking");
+        map.classList.remove("is-walking");
+        foodcourtPosition = { stall: String(stallNumber), left: targetLeft, top: targetTop };
+        foodcourtWalkAnimation.cancel();
+        foodcourtWalkAnimation = null;
+        updateFoodcourtAvatarMarker();
+        saveProgress();
+        openFoodcourtInfo(stallNumber);
+      };
+    }
+
+    function closeFoodcourtInfo() {
+      document.getElementById("foodcourt-info-modal").classList.remove("open");
     }
 
     /* @section: map-logic — native-coordinate walkway-only navigation */
@@ -1427,6 +1660,23 @@
         markerOutfit.style.left = `${offset.left * 0.275}px`;
       }
       document.getElementById("map-avatar-marker").classList.toggle("saved", avatarSaved);
+      const foodcourtBase = document.getElementById("foodcourt-avatar-base");
+      const foodcourtHair = document.getElementById("foodcourt-avatar-hair");
+      const foodcourtOutfit = document.getElementById("foodcourt-avatar-outfit");
+      setImage(foodcourtBase, baseFile, avatarSaved);
+      setImage(foodcourtHair, hairFile, avatarSaved && selectedHair >= 0);
+      setImage(foodcourtOutfit, outfitFile, avatarSaved && selectedOutfit >= 0);
+      if (selectedHair >= 0) {
+        const offset = hairOffsets[currentGender][selectedHair];
+        foodcourtHair.style.top = `${offset.top * 0.275}px`;
+        foodcourtHair.style.left = `${offset.left * 0.275}px`;
+      }
+      if (selectedOutfit >= 0) {
+        const offset = outfitOffsets[currentGender][selectedOutfit];
+        foodcourtOutfit.style.top = `${offset.top * 0.275}px`;
+        foodcourtOutfit.style.left = `${offset.left * 0.275}px`;
+      }
+      updateFoodcourtAvatarMarker();
     }
 
     /* @section: booth-details-logic */
@@ -1626,6 +1876,7 @@
         name: avatarName,
         avatarSaved,
         mapPosition,
+        foodcourtPosition,
         visitedBooths,
         activeCategory
       };
@@ -1670,6 +1921,16 @@
       mapPosition = hasValidPosition
         ? { ...savedPosition, floor: positionFloor, booth: savedPosition.booth == null ? null : String(savedPosition.booth), egress: Array.isArray(savedPosition.egress) ? savedPosition.egress : [] }
         : cloneFloorStart(currentFloor);
+      const savedFoodcourtPosition = progress.foodcourtPosition;
+      const validFoodcourtPosition = savedFoodcourtPosition
+        && typeof savedFoodcourtPosition.left === "string"
+        && typeof savedFoodcourtPosition.top === "string"
+        && /^(\d+(\.\d+)?)%$/.test(savedFoodcourtPosition.left)
+        && /^(\d+(\.\d+)?)%$/.test(savedFoodcourtPosition.top)
+        && (savedFoodcourtPosition.stall == null || Object.prototype.hasOwnProperty.call(foodcourtStalls, String(savedFoodcourtPosition.stall)));
+      foodcourtPosition = validFoodcourtPosition
+        ? { stall: savedFoodcourtPosition.stall == null ? null : String(savedFoodcourtPosition.stall), left: savedFoodcourtPosition.left, top: savedFoodcourtPosition.top }
+        : { stall: null, left: "50%", top: "95%" };
       visitedBooths = Array.isArray(progress.visitedBooths) ? progress.visitedBooths : [];
       activeCategory = typeof progress.activeCategory === "string" ? progress.activeCategory : "All";
     }
